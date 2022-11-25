@@ -1,0 +1,39 @@
+
+using EmployeeService.Domain.Enums;
+using EmployeeService.Domain.Exceptions;
+using SharedKernel.Primitives;
+using System.Collections.Generic;
+
+namespace EmployeeService.Domain.ValueObjects;
+public class Salary : ValueObject
+{
+    public Money Money { get; private init; } = Money.Create(0, Currency.RUB);
+    public SalaryType SalaryType { get; private init; } = SalaryType.PerHour;
+
+    //for EF
+    private Salary() { }
+
+    private Salary(Money money, SalaryType salaryType) 
+    {
+        Money = money;
+        SalaryType = salaryType;
+    }
+
+
+    public static Salary Create(Money money, SalaryType salaryType)
+    {
+        if (money.Amount < 0) throw new ValueIsLessThanZeroDomainException("salary can't be less than 0");
+        return new Salary(money, salaryType);
+    }
+
+    public SalaryType GetSalaryType()
+    {
+        return SalaryType;
+    }
+
+    public override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Money;
+        yield return SalaryType;
+    }
+}

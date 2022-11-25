@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Employee.Domain\EmployeeService.Domain.csproj" />
+    <ProjectReference Include="..\Employee.Persistence\EmployeeService.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\" />
+    <Folder Include="Employees\Commands\ChangeEmployee\" />
+    <Folder Include="Employees\Commands\DeleteEmployee\" />
+    <Folder Include="Employees\Commands\SetJobTitleIdToEmployee\" />
+    <Folder Include="Employees\Queries\GetAllEmployees\" />
+    <Folder Include="JobTitles\Commands\ChangeJobTitle\" />
+    <Folder Include="JobTitles\Commands\CreateJobTitle\" />
+    <Folder Include="JobTitles\Commands\DeleteEmployee\" />
+    <Folder Include="JobTitles\Queries\GetAllJobTitles\" />
+    <Folder Include="JobTitles\Queries\GetJobTitleById\" />
+  </ItemGroup>
+
+</Project>

@@ -17,7 +17,7 @@ public class Name : ValueObject
 
     public static Name Create(string value)
     {
-        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullDomainException("name cant't be null");
+        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullDomainException(nameof(value));
         if (!IsValid(value)) throw new IncorrectParameterDomainException(nameof(value));
         return new Name(value);
     }

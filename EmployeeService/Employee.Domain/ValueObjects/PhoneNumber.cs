@@ -16,7 +16,7 @@ public class PhoneNumber : ValueObject
 
     public static PhoneNumber Create(string value)
     {
-        if (value is null) throw new ArgumentNullDomainException("phone number cant't be null");
+        if (value is null) throw new ArgumentNullDomainException(nameof(value));
         if (!IsValid(value)) throw new IncorrectParameterDomainException(nameof(value));
         
         return new PhoneNumber(value);

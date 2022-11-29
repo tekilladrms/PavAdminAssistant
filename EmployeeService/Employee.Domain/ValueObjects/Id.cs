@@ -13,17 +13,17 @@ public class Id : ValueObject
 
     public Id(Email email)
     {
-        if (email is null) throw new ArgumentNullDomainException("email cant't be null");
+        if (email is null) throw new ArgumentNullDomainException(nameof(email));
         Email = email;
     }
     public Id(PhoneNumber phoneNumber)
     {
-        if (phoneNumber is null) throw new ArgumentNullDomainException("phone number cant't be null");
+        if (phoneNumber is null) throw new ArgumentNullDomainException(nameof(phoneNumber));
         PhoneNumber = phoneNumber;
     }
     public Id(DateOnly dateOnly)
     {
-        if (dateOnly == DateOnly.MinValue) throw new IncorrectParameterDomainException("date is incorrect");
+        if (dateOnly == DateOnly.MinValue) throw new IncorrectParameterDomainException(nameof(dateOnly));
         DateOnly = dateOnly;
     }
 

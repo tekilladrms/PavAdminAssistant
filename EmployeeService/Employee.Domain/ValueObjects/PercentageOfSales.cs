@@ -15,7 +15,7 @@ public class PercentageOfSales : ValueObject
 
     public static PercentageOfSales Create(decimal value)
     {
-        if (value < 0) throw new ValueIsLessThanZeroDomainException("PercentageOfSales can't be less than 0");
+        if (value < 0) throw new ValueIsLessThanZeroDomainException(value);
         return new PercentageOfSales(value);
     }
 

@@ -22,7 +22,7 @@ public class Salary : ValueObject
 
     public static Salary Create(Money money, SalaryType salaryType)
     {
-        if (money.Amount < 0) throw new ValueIsLessThanZeroDomainException("salary can't be less than 0");
+        if (money.Amount < 0) throw new ValueIsLessThanZeroDomainException(money.Amount);
         return new Salary(money, salaryType);
     }
 

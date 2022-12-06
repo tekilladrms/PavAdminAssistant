@@ -2,7 +2,7 @@ namespace EmployeeService.Domain.Enums;
 
 public enum Currency
 {
-    RUB,
-    USD,
-    EUR
+    RUB = 1,
+    USD = 2,
+    EUR = 3
 }

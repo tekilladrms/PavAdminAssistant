@@ -3,15 +3,9 @@ using EmployeeService.Domain.Entities;
 using System.Threading.Tasks;
 using System;
 using System.Threading;
-using System.Data.Entity;
-using SharedKernel.Repositories;
-using EmployeeService.Domain.Exceptions;
-using System.Data.Entity.Migrations;
-using System.CodeDom;
 using EmployeeService.Domain.Exceptions.Database;
-using System.Collections;
 using System.Collections.Generic;
-using EmployeeService.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Persistence.Repositories;
 
@@ -34,7 +28,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
 
     public async Task<JobTitle> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var jobTitle = await _dbContext.Set<JobTitle>().FirstOrDefaultAsync(jt => jt.Guid == id);
+        var jobTitle = await _dbContext.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == id);
 
         if (jobTitle is null) throw new RecordsNotFoundException(nameof(jobTitle));
 
@@ -57,7 +51,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
 
     public void Update(JobTitle jobTitle)
     {
-        _dbContext.Set<JobTitle>().AddOrUpdate(jobTitle);
+        _dbContext.Set<JobTitle>().Update(jobTitle);
     }
 
 }

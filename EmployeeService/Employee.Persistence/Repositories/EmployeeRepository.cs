@@ -3,12 +3,10 @@ using EmployeeService.Domain.Entities;
 using System.Threading.Tasks;
 using System;
 using System.Threading;
-using System.Data.Entity;
-using SharedKernel.Repositories;
 using EmployeeService.Domain.Exceptions;
-using System.Data.Entity.Migrations;
 using EmployeeService.Domain.Exceptions.Database;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Persistence.Repositories;
 internal sealed class EmployeeRepository : IEmployeeRepository
@@ -55,6 +53,6 @@ internal sealed class EmployeeRepository : IEmployeeRepository
     public void Update(Employee employee)
     {
 
-        _dbContext.Set<Employee>().AddOrUpdate(employee);
+        _dbContext.Set<Employee>().Update(employee);
     }
 }

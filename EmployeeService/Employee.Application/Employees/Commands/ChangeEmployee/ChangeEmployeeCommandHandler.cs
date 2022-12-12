@@ -38,12 +38,12 @@ public class ChangeEmployeeCommandHandler : IRequestHandler<ChangeEmployeeComman
 
         if (employee.LastName.Value != request.employeeDto.LastName)
         {
-            employee.ChangeFirstName(request.employeeDto.LastName);
+            employee.ChangeLastName(request.employeeDto.LastName);
         } 
 
         if (employee.PhoneNumber.Value != request.employeeDto.PhoneNumber)
         {
-            employee.ChangeLastName(request.employeeDto.PhoneNumber);
+            employee.ChangePhoneNumber(request.employeeDto.PhoneNumber);
         }
 
         if (employee.BirthDate.ToString() != request.employeeDto.BirthDate)

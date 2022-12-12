@@ -32,7 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Employee.Application\EmployeeService.Application.csproj" />
     <ProjectReference Include="..\..\Employee.Domain\EmployeeService.Domain.csproj" />
+    <ProjectReference Include="..\..\Employee.Persistence\EmployeeService.Persistence.csproj" />
+    <ProjectReference Include="..\..\EmployeeService.Api\EmployeeService.Api.csproj" />
   </ItemGroup>
 
 </Project>

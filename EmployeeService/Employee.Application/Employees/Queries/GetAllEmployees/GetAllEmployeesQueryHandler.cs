@@ -1,12 +1,11 @@
 using AutoMapper;
 using EmployeeService.Application.DTO;
 using EmployeeService.Domain.Entities;
-using EmployeeService.Domain.Exceptions;
 using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Persistence;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

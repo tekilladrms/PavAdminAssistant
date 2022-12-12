@@ -1,5 +1,8 @@
+using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Repositories;
+using EmployeeService.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Repositories;
 using System;
 using System.Threading.Tasks;
 
@@ -9,12 +12,24 @@ public class UnitOfWork : IUnitOfWork
 {
     private bool _disposed;
 
-    private readonly ApplicationDbContext _context;
+    private ApplicationDbContext _context = new ApplicationDbContext();
 
-    public UnitOfWork(ApplicationDbContext applicationDbContext)
+    private readonly IRepository<Employee> _employeeRepository;
+    private readonly IRepository<JobTitle> _jobTitleRepository;
+
+    public IRepository<Employee> EmployeeRepository => _employeeRepository;
+
+    public IRepository<JobTitle> JobTitleRepository => _jobTitleRepository;
+
+
+    public UnitOfWork()
     {
-        _context = applicationDbContext;
+        _employeeRepository = new EmployeeRepository(_context);
+        _jobTitleRepository = new JobTitleRepository(_context);
     }
+
+
+
     protected virtual void Dispose(bool disposing)
     {
         if (!_disposed)

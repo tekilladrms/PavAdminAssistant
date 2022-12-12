@@ -19,7 +19,7 @@ public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComman
 
     public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
-        _jobTitleRepository.Remove(request.Id);
+        _jobTitleRepository.Delete(request.Id);
 
         await _unitOfWork.SaveChangesAsync();
 

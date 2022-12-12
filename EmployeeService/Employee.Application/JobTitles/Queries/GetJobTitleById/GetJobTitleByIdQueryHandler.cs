@@ -4,8 +4,7 @@ using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Persistence;
 using MediatR;
-using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 

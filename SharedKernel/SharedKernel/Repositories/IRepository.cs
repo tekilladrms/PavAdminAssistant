@@ -9,8 +9,12 @@ using System.Threading.Tasks;
 
 namespace SharedKernel.Repositories;
 
-public interface IRepository<T> where T : Entity
+public interface IRepository<TEntity> where TEntity : Entity
 {
-    public Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    public Task<IEnumerable<T>> GetAllAsync(CancellationToken cancellationToken = default);
+    public Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    public Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
+    public Task<TEntity> Add(TEntity entity, CancellationToken cancellationToken = default);
+    public TEntity Update(TEntity entity, CancellationToken cancellationToken = default);
+    public void Delete(Guid id, CancellationToken cancellationToken = default);
+    public void Delete(TEntity entity, CancellationToken cancellationToken = default);
 }

@@ -1,58 +1,71 @@
-using EmployeeService.Domain.Repositories;
-using EmployeeService.Domain.Entities;
-using System.Threading.Tasks;
-using System;
-using System.Threading;
-using EmployeeService.Domain.Exceptions;
+﻿using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Exceptions.Database;
-using System.Collections.Generic;
+using EmployeeService.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace EmployeeService.Persistence.Repositories;
-internal sealed class EmployeeRepository : IEmployeeRepository
+namespace EmployeeService.Persistence.Repositories
 {
-    private readonly ApplicationDbContext _dbContext;
-
-    public EmployeeRepository(ApplicationDbContext dbContext)
+    internal class EmployeeRepository : IEmployeeRepository
     {
-        _dbContext = dbContext;
-    }
+        private readonly ApplicationDbContext _context;
+        public EmployeeRepository(ApplicationDbContext applicationDbContext)
+        {
+            _context = applicationDbContext;
+        }
+        public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            var employees = await _context.Set<Employee>().ToListAsync();
 
-    public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken cancellationToken)
-    {
-        var employees = await _dbContext.Set<Employee>().AsNoTracking().ToListAsync(cancellationToken);
+            if (employees is null) throw new RecordsNotFoundException("no records in database");
 
-        if (employees is null ||  employees.Count == 0) throw new RecordsNotFoundException(nameof(employees));
+            return employees;
+        }
 
-        return employees;
-    }
+        public async Task<Employee> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var employee = await _context.Set<Employee>().FirstOrDefaultAsync(emp => emp.Guid == id);
 
-    public async Task<Employee> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var employee = await _dbContext.Set<Employee>().AsNoTracking()
-            .FirstOrDefaultAsync(emp => emp.Guid == id, cancellationToken);
+            if (employee is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
 
-        if (employee is null) throw new RecordsNotFoundException(nameof(employee));
+            return employee;
+        }
+        public async Task<Employee> Add(Employee entity, CancellationToken cancellationToken = default)
+        {
+            _context.Set<Employee>().Add(entity);
 
-        return employee;
-    }
-    public void Add(Employee employee)
-    {
-        _dbContext.Set<Employee>().Add(employee);
-    }
+            return await GetByIdAsync(entity.Guid);
+        }
 
-    public void Remove(Guid id)
-    {
-        var employee = GetByIdAsync(id).Result;
+        public void Delete(Guid id, CancellationToken cancellationToken = default)
+        {
+            var emp = GetByIdAsync(id);
 
-        if (employee is null) throw new EmployeeNotFoundException(nameof(employee));
+            if (emp is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
 
-        _dbContext.Set<Employee>().Remove(employee);
-    }
+            _context.Remove(emp);
+        }
 
-    public void Update(Employee employee)
-    {
+        public void Delete(Employee entity, CancellationToken cancellationToken = default)
+        {
+            if(_context.Entry(entity).State == EntityState.Detached)
+            {
+                _context.Set<Employee>().Attach(entity);
+            }
+            _context.Remove(entity);
+        }
 
-        _dbContext.Set<Employee>().Update(employee);
+        public Employee Update(Employee entity, CancellationToken cancellationToken = default)
+        {
+            _context.Set<Employee>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            return entity;
+        }
     }
 }

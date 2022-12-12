@@ -6,6 +6,8 @@ using System.Threading;
 using EmployeeService.Domain.Exceptions.Database;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Primitives;
+using SharedKernel.Repositories;
 
 namespace EmployeeService.Persistence.Repositories;
 
@@ -35,23 +37,32 @@ public sealed class JobTitleRepository : IJobTitleRepository
         return jobTitle;
     }
 
-    public void Add(JobTitle jobTitle)
+    
+
+
+    public async Task<JobTitle> Add(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        _dbContext.Set<JobTitle>().Add(jobTitle);
+        _dbContext.Set<JobTitle>().Add(entity);
+        return await GetByIdAsync(entity.Guid);
     }
 
-    public void Remove(Guid id)
+    public JobTitle Update(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        var jobTitle = GetByIdAsync(id).Result;
-
-        if (jobTitle is null) throw new RecordsNotFoundException(nameof(jobTitle));
-
-        _dbContext.Set<JobTitle>().Remove(jobTitle);
+        _dbContext.Set<JobTitle>().Update(entity);
+        return entity;
     }
 
-    public void Update(JobTitle jobTitle)
+    public void Delete(Guid id, CancellationToken cancellationToken = default)
     {
-        _dbContext.Set<JobTitle>().Update(jobTitle);
+        var entity = GetByIdAsync(id).Result;
+
+        if (entity is null) throw new RecordsNotFoundException(nameof(entity));
+
+        _dbContext.Set<JobTitle>().Remove(entity);
     }
 
+    public void Delete(JobTitle entity, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

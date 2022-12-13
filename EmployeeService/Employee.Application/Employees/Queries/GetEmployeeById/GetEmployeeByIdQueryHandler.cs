@@ -22,11 +22,11 @@ public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery,
     public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
     {
 
-        var employee = await _context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync(emp => emp.Guid == request.Employeeid);
+        var employee = await _context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync(emp => emp.Guid == request.EmployeeId);
 
         if (employee is null)
         {
-            throw new RecordsNotFoundException(nameof(request.Employeeid));
+            throw new RecordsNotFoundException(nameof(request.EmployeeId));
         }
 
 

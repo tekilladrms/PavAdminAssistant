@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace EmployeeService.Domain.ValueObjects;
 public class PercentageOfSales : ValueObject
 {
-    public decimal Value { get; private init; } = default;
+    public decimal Value { get; private set; } = default;
 
     //for EF
     private PercentageOfSales() { }

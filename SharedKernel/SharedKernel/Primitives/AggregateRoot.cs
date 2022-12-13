@@ -4,7 +4,7 @@ namespace SharedKernel.Primitives;
 
 public abstract class AggregateRoot : Entity
 {
-    protected AggregateRoot(Guid guid) : base(guid)
+    protected AggregateRoot() : base()
     {
     }
 }

@@ -15,9 +15,9 @@ public class JobTitle : Entity
     public PercentageOfSales PercentageOfSales { get; private set; }
 
     //for EF
-    private JobTitle(Guid id) : base(id) { }
+    private JobTitle() { }
 
-    private JobTitle(Guid id, Name name, Salary salary, PercentageOfSales percentageOfSales) : base(id)
+    private JobTitle(Guid id, Name name, Salary salary, PercentageOfSales percentageOfSales)
     {
         JobTitleName = name;
         Salary = salary;

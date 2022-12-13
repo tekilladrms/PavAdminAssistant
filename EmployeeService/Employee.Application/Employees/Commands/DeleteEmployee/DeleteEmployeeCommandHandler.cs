@@ -11,21 +11,21 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Employees.Commands.DeleteEmployee;
 
-public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand>
+public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, Unit>
 {
-    //private readonly IEmployeeRepository _employeeRepository;
-    private readonly UnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteEmployeeCommandHandler(UnitOfWork unitOfWork)
+    public DeleteEmployeeCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
     public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
-        //await _unitOfWork.EmployeeRepository.Remove(request.id);
+        _unitOfWork.EmployeeRepository.Delete(request.Id);
 
         await _unitOfWork.SaveChangesAsync();
 
         return Unit.Value;
     }
+
 }

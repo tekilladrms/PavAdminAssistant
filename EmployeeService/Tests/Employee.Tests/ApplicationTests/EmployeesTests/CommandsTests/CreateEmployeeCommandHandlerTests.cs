@@ -25,27 +25,27 @@ public class CreateEmployeeCommandHandlerTests
         _mapper = new Mapper(config);
     }
 
-    [Fact]
-    public async Task Handle_Should_ReturnDTO_WhenAllParametersAreCorrect()
-    {
-        // Arrange
-        var command = new CreateEmployeeCommand(
-            new EmployeeDto {
-                Id = Guid.NewGuid(),
-                FirstName = "FirstName",
-                LastName = "LastName",
-                PhoneNumber = "87654321111",
-                BirthDate = "25.10.1988",
-                JobTitleId = Guid.NewGuid()
-                });
+    //[Fact]
+    //public async Task Handle_Should_ReturnDTO_WhenAllParametersAreCorrect()
+    //{
+    //    // Arrange
+    //    var command = new CreateEmployeeCommand(
+    //        new EmployeeDto {
+    //            Id = Guid.NewGuid(),
+    //            FirstName = "FirstName",
+    //            LastName = "LastName",
+    //            PhoneNumber = "87654321111",
+    //            BirthDate = "25.10.1988",
+    //            JobTitleId = Guid.NewGuid()
+    //            });
 
-        var handler = new CreateEmployeeCommandHandler(_unitOfWorkMock.Object, _employeeRepositoryMock.Object, _mapper);
+    //    var handler = new CreateEmployeeCommandHandler(_unitOfWorkMock.Object, _employeeRepositoryMock.Object, _mapper);
 
-        // Act
-        var result = await handler.Handle(command, default);
+    //    // Act
+    //    var result = await handler.Handle(command, default);
 
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(command.employeeDto.FirstName, result.FirstName);
-    }
+    //    // Assert
+    //    Assert.NotNull(result);
+    //    Assert.Equal(command.employeeDto.FirstName, result.FirstName);
+    //}
 }

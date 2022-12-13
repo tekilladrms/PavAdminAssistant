@@ -7,8 +7,8 @@ namespace EmployeeService.Domain.ValueObjects;
 
 public class Money : ValueObject
 {
-    public decimal Amount { get; private init; } = decimal.Zero;
-    public Currency Currency { get; private init; } = Currency.RUB;
+    public decimal Amount { get; private set; } = decimal.Zero;
+    public Currency Currency { get; private set; } = Currency.RUB;
 
 
     //private empty ctor for EF

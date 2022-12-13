@@ -6,10 +6,10 @@ using System.Collections.Generic;
 namespace EmployeeService.Domain.ValueObjects;
 public class Id : ValueObject
 {
-    public Guid Guid { get; private init; } = Guid.NewGuid();
-    public Email Email { get; private init; } = Email.Create(string.Empty);
-    public PhoneNumber PhoneNumber { get; private init; } = PhoneNumber.Create(string.Empty);
-    public DateOnly DateOnly { get; private init; } = DateOnly.MinValue;
+    public Guid Guid { get; private set; } = Guid.NewGuid();
+    public Email Email { get; private set; } = Email.Create(string.Empty);
+    public PhoneNumber PhoneNumber { get; private set; } = PhoneNumber.Create(string.Empty);
+    public DateOnly DateOnly { get; private set; } = DateOnly.MinValue;
 
     public Id(Email email)
     {

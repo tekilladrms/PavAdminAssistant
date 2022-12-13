@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Persistence.Repositories
 {
-    internal class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly ApplicationDbContext _context;
         public EmployeeRepository(ApplicationDbContext applicationDbContext)
@@ -36,16 +36,16 @@ namespace EmployeeService.Persistence.Repositories
 
             return employee;
         }
-        public async Task<Employee> Add(Employee entity, CancellationToken cancellationToken = default)
+        public void Add(Employee entity, CancellationToken cancellationToken = default)
         {
+            if(entity is null) throw new ArgumentNullException(nameof(entity));
             _context.Set<Employee>().Add(entity);
 
-            return await GetByIdAsync(entity.Guid);
         }
 
         public void Delete(Guid id, CancellationToken cancellationToken = default)
         {
-            var emp = GetByIdAsync(id);
+            Employee? emp = _context.Set<Employee>().FirstOrDefault(empl => empl.Guid == id);
 
             if (emp is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
 

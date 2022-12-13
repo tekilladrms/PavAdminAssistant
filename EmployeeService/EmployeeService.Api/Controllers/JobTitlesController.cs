@@ -83,9 +83,9 @@ namespace EmployeeService.Api.Controllers
 
         // DELETE api/<JobTitlesController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public void Delete(Guid id, [FromBody] EmployeeDto request)
         {
-            _mediator.Send(new DeleteEmployeeCommand(id));
+            
         }
     }
 }

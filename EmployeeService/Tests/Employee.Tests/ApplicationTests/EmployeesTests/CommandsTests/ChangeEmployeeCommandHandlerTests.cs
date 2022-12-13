@@ -7,7 +7,12 @@ using EmployeeService.Application.Employees.Commands.CreateEmployee;
 using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Repositories;
 using EmployeeService.Domain.ValueObjects;
+using EmployeeService.Persistence;
+using EmployeeService.Persistence.Repositories;
+using EmployeeService.Tests.PersistenceTests;
+using Microsoft.EntityFrameworkCore;
 using Moq;
+using Moq.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,36 +21,56 @@ namespace EmployeeService.Tests.ApplicationTests.EmployeesTests.CommandsTests;
 
 public class ChangeEmployeeCommandHandlerTests
 {
-    private readonly Mock<IEmployeeRepository> _employeeRepositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+    private readonly Mock<ApplicationDbContext> _appDbContextMock;
+    private readonly Mock<EmployeeRepository> _employeeRepositoryMock;
+    private readonly FakeUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly Guid _id;
 
     public ChangeEmployeeCommandHandlerTests()
     {
         _id = Guid.NewGuid();
+        _appDbContextMock = new();
+        _appDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(GetTestDataCollection(), new Mock<DbSet<Employee>>());
+        _employeeRepositoryMock = new(_appDbContextMock.Object);
 
-        _employeeRepositoryMock = new();
-        _employeeRepositoryMock.Setup(repo => repo.GetByIdAsync(_id, default)).Returns(GetTestData());
-
-        _unitOfWorkMock = new();
+        _unitOfWork = new(_appDbContextMock.Object, _employeeRepositoryMock.Object, null);
 
         var mapProfile = new MapProfile();
         var config = new MapperConfiguration(cfg => cfg.AddProfile(mapProfile));
         _mapper = new Mapper(config);
     }
 
-    private async Task<Employee> GetTestData()
+    private List<Employee> GetTestDataCollection()
     {
-        var employee = Employee.Create(
+        var employees = new List<Employee>
+        {
+            Employee.Create(
                 _id,
-            "Firstname",
-            "Lastname",
-            "87654321111",
+            "Alex",
+            "Fedurin",
+            "87654321110",
             DateOnly.Parse("25.10.1988"),
             Guid.NewGuid()
-            );
-        return employee;
+            ),
+            Employee.Create(
+                Guid.NewGuid(),
+            "Ivan",
+            "Ivanov",
+            "87654321111",
+            DateOnly.Parse("25.10.1989"),
+            Guid.NewGuid()),
+            Employee.Create(
+                Guid.NewGuid(),
+            "Petr",
+            "Petrov",
+            "87654321112",
+            DateOnly.Parse("25.10.1990"),
+            Guid.NewGuid())
+        };
+
+
+        return employees;
     }
 
     [Fact]
@@ -76,7 +101,7 @@ public class ChangeEmployeeCommandHandlerTests
             }
             );
 
-        var handler = new ChangeEmployeeCommandHandler(_unitOfWorkMock.Object, _employeeRepositoryMock.Object, _mapper);
+        var handler = new ChangeEmployeeCommandHandler(_unitOfWork, _mapper);
 
         // Act
         var result = await handler.Handle(command, default);

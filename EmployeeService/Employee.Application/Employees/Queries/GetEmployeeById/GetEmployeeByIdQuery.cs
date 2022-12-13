@@ -5,4 +5,4 @@ using System;
 
 namespace EmployeeService.Application.Employees.Queries.GetEmployeeById;
 
-public sealed record GetEmployeeByIdQuery(Guid Employeeid) : IRequest<EmployeeDto>;
+public sealed record GetEmployeeByIdQuery(Guid EmployeeId) : IRequest<EmployeeDto>;

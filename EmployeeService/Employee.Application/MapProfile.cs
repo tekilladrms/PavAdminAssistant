@@ -17,6 +17,8 @@ public class MapProfile : Profile
 		CreateMap<JobTitle, JobTitleDto>()
 			.ForMember(dest => dest.SalaryType, opt => opt.MapFrom(src => src.Salary.SalaryType))
 			.ForMember(dest => dest.SalaryAmount, opt => opt.MapFrom(src => src.Salary.Money.Amount))
-			.ForMember(dest => dest.SalaryCurrency, opt => opt.MapFrom(src => src.Salary.Money.Currency));
+			.ForMember(dest => dest.SalaryCurrency, opt => opt.MapFrom(src => src.Salary.Money.Currency))
+			.ForMember(dest => dest.PercentageOfSales, opt => opt.MapFrom(src => src.PercentageOfSales.Value));
+		
 	}
 }

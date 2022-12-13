@@ -11,6 +11,8 @@ using EmployeeService.Application.Employees.Commands.ChangeEmployee;
 using EmployeeService.Domain.Exceptions;
 using EmployeeService.Application.Employees.Commands.DeleteEmployee;
 
+
+
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EmployeeService.Api.Controllers
@@ -26,7 +28,7 @@ namespace EmployeeService.Api.Controllers
 
         // GET: api/<EmployeeController>
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             var employees = await _mediator.Send(new GetAllEmployeesQuery());
 
@@ -34,44 +36,40 @@ namespace EmployeeService.Api.Controllers
             {
                 return NotFound();
             }
-
+            
             return Ok(employees.ToList());
         }
 
 
         // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEmployeeById(Guid id)
+        public async Task<IActionResult> GetEmployeeById(Guid id)
         {
-            var employee = await _mediator.Send(new GetEmployeeByIdQuery(id));
+            var employeeDto = await _mediator.Send(new GetEmployeeByIdQuery(id));
 
 
-            if (employee is null)
+            if (employeeDto is null)
             {
                 return NotFound();
             }
 
-            return Ok(employee);
+            return Ok(employeeDto);
         }
 
 
         // POST api/<EmployeeController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] EmployeeDto request)
+        public async Task Post([FromBody] EmployeeDto request)
         {
-            var employeeDto = await _mediator.Send(new CreateEmployeeCommand(request));
 
-            if (employeeDto is null)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(employeeDto);
+            await _mediator.Send(new CreateEmployeeCommand(request));
+            
         }
 
 
         // PUT api/<EmployeeController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid Id, [FromBody] EmployeeDto request)
+        public async Task<IActionResult> Put([FromBody] EmployeeDto request)
         {
             var employeeDto = await _mediator.Send(new ChangeEmployeeCommand(request));
 

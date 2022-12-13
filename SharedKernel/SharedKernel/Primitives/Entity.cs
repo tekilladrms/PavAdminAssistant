@@ -3,12 +3,17 @@
 namespace SharedKernel.Primitives;
 public abstract class Entity : IEquatable<Entity>
 {
-    public Guid Guid { get; private init; } = Guid.NewGuid();
+    public Guid Guid { get; private set; } = Guid.NewGuid();
 
-	public Entity(Guid guid)
-	{
-		Guid = guid;
-	}
+    public Entity()
+    {
+
+    }
+
+	//public Entity(Guid guid)
+	//{
+	//	Guid = guid;
+	//}
 
     public static bool operator ==(Entity? first, Entity? second)
     {

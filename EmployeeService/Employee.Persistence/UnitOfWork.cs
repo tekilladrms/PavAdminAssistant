@@ -12,23 +12,20 @@ public class UnitOfWork : IUnitOfWork
 {
     private bool _disposed;
 
-    private ApplicationDbContext _context = new ApplicationDbContext();
+    private ApplicationDbContext _context;
 
-    private readonly IRepository<Employee> _employeeRepository;
-    private readonly IRepository<JobTitle> _jobTitleRepository;
-
-    public IRepository<Employee> EmployeeRepository => _employeeRepository;
-
-    public IRepository<JobTitle> JobTitleRepository => _jobTitleRepository;
+    private EmployeeRepository? _employeeRepository;
+    private JobTitleRepository? _jobTitleRepository;
 
 
-    public UnitOfWork()
+    IEmployeeRepository IUnitOfWork.EmployeeRepository => _employeeRepository ??= new EmployeeRepository(_context);
+
+    IJobTitleRepository IUnitOfWork.JobTitleRepository => _jobTitleRepository ??= new JobTitleRepository(_context);
+
+    public UnitOfWork(ApplicationDbContext context)
     {
-        _employeeRepository = new EmployeeRepository(_context);
-        _jobTitleRepository = new JobTitleRepository(_context);
+        _context = context;
     }
-
-
 
     protected virtual void Dispose(bool disposing)
     {

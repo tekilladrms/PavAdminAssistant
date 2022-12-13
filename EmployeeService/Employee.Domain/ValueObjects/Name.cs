@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 namespace EmployeeService.Domain.ValueObjects;
 public class Name : ValueObject
 {
-    public string Value { get; private init; } = string.Empty;
+    public string Value { get; private set; } = string.Empty;
 
     //for EF
     private Name() { }

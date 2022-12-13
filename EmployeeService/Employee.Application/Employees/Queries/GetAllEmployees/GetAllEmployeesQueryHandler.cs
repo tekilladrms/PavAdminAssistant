@@ -21,7 +21,7 @@ public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery,
         _context = dbContext;
         _mapper = mapper;
     }
-    public async Task<List<EmployeeDto>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken)
+    public async Task<List<EmployeeDto>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken = default)
     {
         var results = await _context.Set<Employee>().AsNoTracking().ToListAsync();
 

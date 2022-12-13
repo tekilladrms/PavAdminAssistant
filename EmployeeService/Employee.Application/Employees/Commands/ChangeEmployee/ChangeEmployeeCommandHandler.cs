@@ -4,6 +4,7 @@ using EmployeeService.Domain.Exceptions;
 using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Domain.Repositories;
 using EmployeeService.Domain.ValueObjects;
+using EmployeeService.Persistence;
 using MediatR;
 using System.IO;
 using System.Threading;
@@ -13,18 +14,17 @@ namespace EmployeeService.Application.Employees.Commands.ChangeEmployee;
 
 public class ChangeEmployeeCommandHandler : IRequestHandler<ChangeEmployeeCommand, EmployeeDto>
 {
-    private readonly IEmployeeRepository _employeeRepository;
+    
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-    public ChangeEmployeeCommandHandler(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IMapper mapper)
+    public ChangeEmployeeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _employeeRepository = employeeRepository;
         _mapper = mapper;
     }
     public async Task<EmployeeDto> Handle(ChangeEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = await _employeeRepository.GetByIdAsync(request.employeeDto.Id);
+        var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.employeeDto.Id);
 
         if (employee is null)
         {
@@ -51,7 +51,7 @@ public class ChangeEmployeeCommandHandler : IRequestHandler<ChangeEmployeeComman
             employee.ChangeBirthDate(request.employeeDto.BirthDate);
         }
 
-        _employeeRepository.Update(employee);
+        _unitOfWork.EmployeeRepository.Update(employee);
 
         await _unitOfWork.SaveChangesAsync();
 

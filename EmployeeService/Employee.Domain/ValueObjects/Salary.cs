@@ -7,8 +7,8 @@ using System.Collections.Generic;
 namespace EmployeeService.Domain.ValueObjects;
 public class Salary : ValueObject
 {
-    public Money Money { get; private init; } = Money.Create(0, Currency.RUB);
-    public SalaryType SalaryType { get; private init; } = SalaryType.PerHour;
+    public Money Money { get; private set; } = Money.Create(0, Currency.RUB);
+    public SalaryType SalaryType { get; private set; } = SalaryType.PerHour;
 
     //for EF
     private Salary() { }

@@ -13,15 +13,15 @@ namespace EmployeeService.Persistence.Repositories;
 
 public sealed class JobTitleRepository : IJobTitleRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly ApplicationDbContext _context;
     public JobTitleRepository(ApplicationDbContext dbContext)
     {
-        _dbContext = dbContext;
+        _context = dbContext;
     }
 
     public async Task<IEnumerable<JobTitle>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var jobTitles = await _dbContext.Set<JobTitle>().AsNoTracking().ToListAsync(cancellationToken);
+        var jobTitles = await _context.Set<JobTitle>().AsNoTracking().ToListAsync(cancellationToken);
 
         if (jobTitles is null || jobTitles.Count == 0) throw new RecordsNotFoundException(nameof(jobTitles));
 
@@ -30,7 +30,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
 
     public async Task<JobTitle> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var jobTitle = await _dbContext.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == id);
+        var jobTitle = await _context.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == id);
 
         if (jobTitle is null) throw new RecordsNotFoundException(nameof(jobTitle));
 
@@ -40,29 +40,32 @@ public sealed class JobTitleRepository : IJobTitleRepository
     
 
 
-    public async Task<JobTitle> Add(JobTitle entity, CancellationToken cancellationToken = default)
+    public void Add(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        _dbContext.Set<JobTitle>().Add(entity);
-        return await GetByIdAsync(entity.Guid);
+        _context.Set<JobTitle>().Add(entity);
     }
 
     public JobTitle Update(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        _dbContext.Set<JobTitle>().Update(entity);
+        _context.Set<JobTitle>().Update(entity);
         return entity;
     }
 
     public void Delete(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = GetByIdAsync(id).Result;
+        var jt = _context.Set<JobTitle>().FirstOrDefaultAsync(jobT => jobT.Guid == id);
 
-        if (entity is null) throw new RecordsNotFoundException(nameof(entity));
+        if (jt is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
 
-        _dbContext.Set<JobTitle>().Remove(entity);
+        _context.Remove(jt);
     }
 
     public void Delete(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        if (_context.Entry(entity).State == EntityState.Detached)
+        {
+            _context.Set<JobTitle>().Attach(entity);
+        }
+        _context.Remove(entity);
     }
 }

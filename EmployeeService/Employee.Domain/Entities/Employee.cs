@@ -6,28 +6,45 @@ using System;
 
 namespace EmployeeService.Domain.Entities;
 public sealed class Employee : AggregateRoot
-{ 
-    public Name FirstName { get; private set; } 
-    public Name LastName { get; private set; } 
+{
+    public Name FirstName { get; private set; }
+    public Name LastName { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public DateOnly BirthDate { get; private set; }
     public bool IsActive { get; private set; } = false;
     public Guid JobTitleId { get; private set; }
 
     //for EF
-    private Employee(Guid id) : base(id) { }
+    private Employee() { }
+    //private Employee(
+    //    Guid id, 
+    //    Name firstName, 
+    //    Name lastName,
+    //    PhoneNumber phoneNumber,
+    //    DateOnly birthDate,
+    //    Guid jobTitleId) 
+    //    : base(id)
+    //{
+    //    FirstName = firstName;
+    //    LastName = lastName;
+    //    PhoneNumber = phoneNumber;
+    //    BirthDate = birthDate;
+    //    IsActive = true;
+    //    JobTitleId = jobTitleId;
+    //}
+
     private Employee(
-        Guid id, 
-        Name firstName, 
-        Name lastName,
-        PhoneNumber phoneNumber,
+        Guid id,
+        string firstName,
+        string lastName,
+        string phoneNumber,
         DateOnly birthDate,
-        Guid jobTitleId) 
-        : base(id)
+        Guid jobTitleId
+        )
     {
-        FirstName = firstName;
-        LastName = lastName;
-        PhoneNumber = phoneNumber;
+        FirstName = Name.Create(firstName);
+        LastName = Name.Create(lastName);
+        PhoneNumber = PhoneNumber.Create(phoneNumber);
         BirthDate = birthDate;
         IsActive = true;
         JobTitleId = jobTitleId;
@@ -42,15 +59,16 @@ public sealed class Employee : AggregateRoot
         Guid jobTitleId
         )
     {
-        if(firstName is null) throw new ArgumentNullDomainException(nameof(firstName));
-        if(lastName is null) throw new ArgumentNullDomainException(nameof(lastName));
-        if(phoneNumber is null) throw new ArgumentNullDomainException(nameof(phoneNumber));
+        if (firstName is null) throw new ArgumentNullDomainException(nameof(firstName));
+        if (lastName is null) throw new ArgumentNullDomainException(nameof(lastName));
+        if (phoneNumber is null) throw new ArgumentNullDomainException(nameof(phoneNumber));
 
 
         return new Employee(
-            id, Name.Create(firstName), 
-            Name.Create(lastName),
-            PhoneNumber.Create(phoneNumber),
+            id,
+            firstName,
+            lastName,
+            phoneNumber,
             birthDate,
             jobTitleId);
     }

@@ -12,6 +12,7 @@ public class JobTitleConfiguration : IEntityTypeConfiguration<JobTitle>
     public void Configure(EntityTypeBuilder<JobTitle> builder)
     {
         builder.HasKey(jt => jt.Guid);
+        
 
         builder.OwnsOne(jt => jt.JobTitleName).Property(prop => prop.Value).HasColumnName<string>("JobTitleName");
 
@@ -22,22 +23,23 @@ public class JobTitleConfiguration : IEntityTypeConfiguration<JobTitle>
                 .Property(salary => salary.SalaryType)
                 .HasConversion(
                     value => value.ToString(),
-                    value => (SalaryType)Enum.Parse(typeof(SalaryType), value));
+                    value => (SalaryType)Enum.Parse(typeof(SalaryType), value)).HasColumnName("SalaryType");
             });
 
-        builder.OwnsOne(jt => jt.Salary.Money, 
-            navigationBuilder =>
+        builder.OwnsOne(
+            jt => jt.Salary, 
+            salary =>
+        {
+            salary.OwnsOne(
+                prop => prop.Money, 
+                money =>
             {
-                navigationBuilder
-                .Property(money => money.Amount)
-                .HasColumnName<decimal>("Amount");
-
-                navigationBuilder
-                .Property(money => money.Currency)
-                .HasConversion(
-                    value => value.ToString(),
-                    value => (Currency)Enum.Parse(typeof(Currency), value));
+                money.Property(amount => amount.Amount).HasColumnName<decimal>("Amount");
+                money.Property(currency => currency.Currency).HasColumnName("Currency");
             });
-        
+        });
+
+        builder.OwnsOne(jt => jt.PercentageOfSales).Property(prop => prop.Value).HasColumnName<decimal>("PercentageOfSales");
+ 
     }
 }

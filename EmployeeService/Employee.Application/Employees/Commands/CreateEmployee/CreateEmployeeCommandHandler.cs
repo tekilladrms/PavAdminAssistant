@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,20 +11,18 @@ using MediatR;
 
 namespace EmployeeService.Application.Employees.Commands.CreateEmployee;
 
-internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, EmployeeDto>
+internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Unit>
 {
-    private readonly IEmployeeRepository _employeeRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateEmployeeCommandHandler(IUnitOfWork unitOfWork, IEmployeeRepository employeeRepository, IMapper mapper)
+    public CreateEmployeeCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _employeeRepository = employeeRepository;
         _mapper = mapper;
     }
 
-    public async Task<EmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var firstNameResult = Name.Create(request.employeeDto.FirstName);
         var lastNameResult = Name.Create(request.employeeDto.LastName);
@@ -40,11 +39,11 @@ internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmplo
             birthDate,
             jobTitleId);
 
-        _employeeRepository.Add(employee);
+        _unitOfWork.EmployeeRepository.Add(employee);
 
         await _unitOfWork.SaveChangesAsync();
+        return Unit.Value;
 
-        return _mapper.Map<Employee, EmployeeDto>(employee);
     }
 
 }

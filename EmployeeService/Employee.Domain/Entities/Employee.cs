@@ -16,22 +16,7 @@ public sealed class Employee : AggregateRoot
 
     //for EF
     private Employee() { }
-    //private Employee(
-    //    Guid id, 
-    //    Name firstName, 
-    //    Name lastName,
-    //    PhoneNumber phoneNumber,
-    //    DateOnly birthDate,
-    //    Guid jobTitleId) 
-    //    : base(id)
-    //{
-    //    FirstName = firstName;
-    //    LastName = lastName;
-    //    PhoneNumber = phoneNumber;
-    //    BirthDate = birthDate;
-    //    IsActive = true;
-    //    JobTitleId = jobTitleId;
-    //}
+    
 
     private Employee(
         Guid id,

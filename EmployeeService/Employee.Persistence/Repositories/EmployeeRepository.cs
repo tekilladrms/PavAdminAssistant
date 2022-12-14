@@ -36,11 +36,12 @@ namespace EmployeeService.Persistence.Repositories
 
             return employee;
         }
-        public void Add(Employee entity, CancellationToken cancellationToken = default)
+        public async Task<Employee> AddAsync(Employee entity, CancellationToken cancellationToken = default)
         {
             if(entity is null) throw new ArgumentNullException(nameof(entity));
-            _context.Set<Employee>().Add(entity);
+            var result = await _context.Set<Employee>().AddAsync(entity);
 
+            return result.Entity;
         }
 
         public void Delete(Guid id, CancellationToken cancellationToken = default)

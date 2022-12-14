@@ -73,7 +73,7 @@ public class ChangeEmployeeCommandHandlerTests
         return employees;
     }
 
-    [Fact]
+    
     public async Task Handle_Should_ReturnDTO_WhenAllParametersAreCorrect()
     {
         // Arrange

@@ -40,14 +40,17 @@ public sealed class JobTitleRepository : IJobTitleRepository
     
 
 
-    public void Add(JobTitle entity, CancellationToken cancellationToken = default)
+    public async Task<JobTitle> AddAsync(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        _context.Set<JobTitle>().Add(entity);
+        if (entity is null) throw new ArgumentNullException(nameof(entity));
+        var result = await _context.Set<JobTitle>().AddAsync(entity);
+        return result.Entity;
     }
 
     public JobTitle Update(JobTitle entity, CancellationToken cancellationToken = default)
     {
-        _context.Set<JobTitle>().Update(entity);
+        _context.Set<JobTitle>().Attach(entity);
+        _context.Entry(entity).State = EntityState.Modified;
         return entity;
     }
 

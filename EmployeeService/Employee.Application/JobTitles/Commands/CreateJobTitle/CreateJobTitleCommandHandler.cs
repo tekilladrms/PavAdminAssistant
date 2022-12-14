@@ -38,7 +38,7 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobTitleCommand, Jo
             salaryResult,
             percentageOfSalesResult);
 
-        _jobTitleRepository.Add(jobTitle);
+        await _jobTitleRepository.AddAsync(jobTitle);
 
         await _unitOfWork.SaveChangesAsync();
 

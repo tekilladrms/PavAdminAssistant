@@ -79,10 +79,35 @@ public class EmployeeRepositoryTests
     public void GetByIdAsync_Should_ReturnEmployeeInstance_WhenIdIsExistsInDB()
     {
         // Arrange
-        _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(GetAll());
+        var employees = new List<Employee>
+        {
+            Employee.Create(
+                _id,
+            "Alex",
+            "Fedurin",
+            "87654321110",
+            DateOnly.Parse("25.10.1988"),
+            Guid.NewGuid()
+            ),
+            Employee.Create(
+                Guid.NewGuid(),
+            "Ivan",
+            "Ivanov",
+            "87654321111",
+            DateOnly.Parse("25.10.1989"),
+            Guid.NewGuid()),
+            Employee.Create(
+                Guid.NewGuid(),
+            "Petr",
+            "Petrov",
+            "87654321112",
+            DateOnly.Parse("25.10.1990"),
+            Guid.NewGuid())
+        };
+        _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(employees);
 
         // Act
-        var result = _employeeRepository.GetByIdAsync(_id);
+        var result = _employeeRepository.GetByIdAsync(employees[0].Guid);
 
         // Assert
         Assert.NotNull(result.Result);
@@ -109,7 +134,7 @@ public class EmployeeRepositoryTests
         _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(GetAll());
 
         // Act
-        _employeeRepository.Add(Employee.Create(
+        _employeeRepository.AddAsync(Employee.Create(
             testGuid,
             "Alexey",
             "Alexey",
@@ -127,11 +152,36 @@ public class EmployeeRepositoryTests
     public void Delete_Should_RemoveEmployeeFromDatabase()
     {
         // Arrange
-        _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(GetAll());
+        var employees = new List<Employee>
+        {
+            Employee.Create(
+                _id,
+            "Alex",
+            "Fedurin",
+            "87654321110",
+            DateOnly.Parse("25.10.1988"),
+            Guid.NewGuid()
+            ),
+            Employee.Create(
+                Guid.NewGuid(),
+            "Ivan",
+            "Ivanov",
+            "87654321111",
+            DateOnly.Parse("25.10.1989"),
+            Guid.NewGuid()),
+            Employee.Create(
+                Guid.NewGuid(),
+            "Petr",
+            "Petrov",
+            "87654321112",
+            DateOnly.Parse("25.10.1990"),
+            Guid.NewGuid())
+        };
+        _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(employees);
 
         // Act
-        
-        _employeeRepository.Delete(_id);
+
+        _employeeRepository.Delete(employees[0].Guid);
 
         // Assert
         Assert.ThrowsAsync<RecordsNotFoundException>(() => _employeeRepository.GetByIdAsync(_id));

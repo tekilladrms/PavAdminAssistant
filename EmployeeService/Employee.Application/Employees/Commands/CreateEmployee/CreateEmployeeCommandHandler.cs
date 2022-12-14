@@ -11,7 +11,7 @@ using MediatR;
 
 namespace EmployeeService.Application.Employees.Commands.CreateEmployee;
 
-internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, Unit>
+internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, EmployeeDto>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
@@ -22,7 +22,7 @@ internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmplo
         _mapper = mapper;
     }
 
-    public async Task<Unit> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var firstNameResult = Name.Create(request.employeeDto.FirstName);
         var lastNameResult = Name.Create(request.employeeDto.LastName);
@@ -39,10 +39,10 @@ internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmplo
             birthDate,
             jobTitleId);
 
-        _unitOfWork.EmployeeRepository.Add(employee);
+        await _unitOfWork.EmployeeRepository.AddAsync(employee);
 
         await _unitOfWork.SaveChangesAsync();
-        return Unit.Value;
+        return _mapper.Map<EmployeeDto>(await _unitOfWork.EmployeeRepository.GetByIdAsync(employee.Guid));
 
     }
 

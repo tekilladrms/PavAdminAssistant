@@ -16,9 +16,9 @@ public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery,
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
-    public GetAllEmployeesQueryHandler(ApplicationDbContext dbContext, IMapper mapper)
+    public GetAllEmployeesQueryHandler(ApplicationDbContext context, IMapper mapper)
     {
-        _context = dbContext;
+        _context = context;
         _mapper = mapper;
     }
     public async Task<List<EmployeeDto>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken = default)

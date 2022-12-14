@@ -3,7 +3,6 @@ using EmployeeService.Application;
 using EmployeeService.Application.Employees.Queries.GetAllEmployees;
 using EmployeeService.Domain.Entities;
 using EmployeeService.Persistence;
-using EmployeeService.Tests.ApplicationTests.Fakes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
@@ -18,7 +17,7 @@ namespace EmployeeService.Tests.ApplicationTests.EmployeesTests.QueriesTests;
 
 public class GetAllEmployeesQueryHandlerTests
 {
-    private Mock<DbContext> _contextMock;
+    private Mock<ApplicationDbContext> _contextMock;
     private IMapper _mapper;
 
     public GetAllEmployeesQueryHandlerTests()
@@ -43,10 +42,10 @@ public class GetAllEmployeesQueryHandlerTests
     {
         // Arrange
         var query = new GetAllEmployeesQuery();
-        //var queryHandler = new GetAllEmployeesQueryHandler(_contextMock.Object, _mapper);
+        var queryHandler = new GetAllEmployeesQueryHandler(_contextMock.Object, _mapper);
 
         // Act
-        //var result = await queryHandler.Handle(query);
+        var result = await queryHandler.Handle(query);
 
         // Assert
         Assert.NotNull(result);

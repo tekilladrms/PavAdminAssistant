@@ -77,10 +77,37 @@ public class JobTitleRepositoryTests
     public void GetByIdAsync_Should_ReturnJobTitleInstance_WhenIdIsExistsInDB()
     {
         // Arrange
-        _applicationDbContextMock.Setup(ctx => ctx.Set<JobTitle>()).ReturnsDbSet(GetAll());
+        var jobTitles = new List<JobTitle>
+        {
+            JobTitle.Create(
+                _id,
+                Name.Create("Admin"),
+                Salary.Create(Money.Create(150, Domain.Enums.Currency.RUB), Domain.Enums.SalaryType.PerHour),
+                PercentageOfSales.Create(0)
+                ),
+            JobTitle.Create(
+                Guid.NewGuid(),
+                Name.Create("Sound"),
+                Salary.Create(Money.Create(150, Domain.Enums.Currency.RUB), Domain.Enums.SalaryType.PerHour),
+                PercentageOfSales.Create(0)
+                ),
+            JobTitle.Create(
+                Guid.NewGuid(),
+                Name.Create("Owner"),
+                Salary.Create(Money.Create(150, Domain.Enums.Currency.RUB), Domain.Enums.SalaryType.PerHour),
+                PercentageOfSales.Create(0)
+                ),
+            JobTitle.Create(
+                Guid.NewGuid(),
+                Name.Create("Officiant"),
+                Salary.Create(Money.Create(150, Domain.Enums.Currency.RUB), Domain.Enums.SalaryType.PerHour),
+                PercentageOfSales.Create(0)
+                )
+        };
+        _applicationDbContextMock.Setup(ctx => ctx.Set<JobTitle>()).ReturnsDbSet(jobTitles);
 
         // Act
-        var result = _jobTitleRepository.GetByIdAsync(_id);
+        var result = _jobTitleRepository.GetByIdAsync(jobTitles[0].Guid);
 
         // Assert
         Assert.NotNull(result.Result);
@@ -107,7 +134,7 @@ public class JobTitleRepositoryTests
         _applicationDbContextMock.Setup(ctx => ctx.Set<JobTitle>()).ReturnsDbSet(GetAll());
 
         // Act
-        _jobTitleRepository.Add(
+        _jobTitleRepository.AddAsync(
             JobTitle.Create(
                 testGuid,
                 Name.Create("CEO"),
@@ -122,7 +149,7 @@ public class JobTitleRepositoryTests
     }
 
     [Fact]
-    public void Remove_Should_RemoveJobTitleFromDatabase()
+    public void Delete_Should_RemoveJobTitleFromDatabase()
     {
         // Arrange
         _applicationDbContextMock.Setup(ctx => ctx.Set<JobTitle>()).ReturnsDbSet(GetAll());
@@ -135,19 +162,5 @@ public class JobTitleRepositoryTests
         Assert.ThrowsAsync<RecordsNotFoundException>(() => _jobTitleRepository.GetByIdAsync(_id));
     }
 
-    [Fact]
-    public async Task Update_Should_UpdateRecordInDatabase()
-    {
-        // Arrange
-        _applicationDbContextMock.Setup(ctx => ctx.Set<JobTitle>()).ReturnsDbSet(GetAll());
-
-        // Act
-        var jt = await _jobTitleRepository.GetByIdAsync(_id);
-        jt.ChangeName(Name.Create("SEO"));
-
-        _jobTitleRepository.Update(jt);
-
-        // Assert
-        Assert.Equal(jt.JobTitleName.Value, _jobTitleRepository.GetByIdAsync(_id).Result.JobTitleName.Value);
-    }
+    
 }

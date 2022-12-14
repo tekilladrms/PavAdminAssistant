@@ -14,17 +14,19 @@ public class UnitOfWork : IUnitOfWork
 
     private ApplicationDbContext _context;
 
-    private EmployeeRepository? _employeeRepository;
-    private JobTitleRepository? _jobTitleRepository;
+    private EmployeeRepository _employeeRepository;
+    private JobTitleRepository _jobTitleRepository;
 
 
-    IEmployeeRepository IUnitOfWork.EmployeeRepository => _employeeRepository ??= new EmployeeRepository(_context);
+    IEmployeeRepository IUnitOfWork.EmployeeRepository => _employeeRepository;
 
-    IJobTitleRepository IUnitOfWork.JobTitleRepository => _jobTitleRepository ??= new JobTitleRepository(_context);
+    IJobTitleRepository IUnitOfWork.JobTitleRepository => _jobTitleRepository;
 
     public UnitOfWork(ApplicationDbContext context)
     {
         _context = context;
+        _employeeRepository = new EmployeeRepository(_context);
+        _jobTitleRepository = new JobTitleRepository(_context);
     }
 
     protected virtual void Dispose(bool disposing)

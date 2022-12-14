@@ -6,5 +6,5 @@ using System;
 
 namespace EmployeeService.Application.Employees.Commands.CreateEmployee;
 
-public sealed record CreateEmployeeCommand(EmployeeDto employeeDto) : IRequest<Unit>;
+public sealed record CreateEmployeeCommand(EmployeeDto employeeDto) : IRequest<EmployeeDto>;
 

@@ -5,6 +5,7 @@ using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,17 +20,14 @@ public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery,
         _context = context;
         _mapper = mapper;
     }
-    public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken = default)
     {
-
-        var employee = await _context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync(emp => emp.Guid == request.EmployeeId);
+        var employee = await _context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync(emp => emp.Guid == request.EmployeeId, cancellationToken);
 
         if (employee is null)
         {
             throw new RecordsNotFoundException(nameof(request.EmployeeId));
         }
-
-
 
         return _mapper.Map<EmployeeDto>(employee);
     }

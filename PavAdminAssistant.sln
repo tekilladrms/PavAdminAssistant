@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "SharedKernel\SharedKernel\SharedKernel.csproj", "{B952A0D7-C629-4BC3-977B-A362054D9D31}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift.Api", "ShiftService\Shift.Api\Shift.Api.csproj", "{9C5880E7-62D9-402B-B34B-E114AEE96797}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftService.Api", "ShiftService\Shift.Api\ShiftService.Api.csproj", "{9C5880E7-62D9-402B-B34B-E114AEE96797}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmployeeService", "EmployeeService", "{3072FE74-73B5-4A42-8166-CDA58C1FB904}"
 EndProject
@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Application
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Domain", "EmployeeService\Employee.Domain\EmployeeService.Domain.csproj", "{B9ED6C97-1CD3-4E94-B956-5A913B129227}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift.Application", "ShiftService\Shift.Application\Shift.Application.csproj", "{18750CDB-08BC-4449-9F97-A5D6D6009C0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftService.Application", "ShiftService\Shift.Application\ShiftService.Application.csproj", "{18750CDB-08BC-4449-9F97-A5D6D6009C0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shift.Domain", "ShiftService\Shift.Domain\Shift.Domain.csproj", "{ABE8BA27-6D15-44DF-B36D-5EA467E378C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShiftService.Domain", "ShiftService\Shift.Domain\ShiftService.Domain.csproj", "{ABE8BA27-6D15-44DF-B36D-5EA467E378C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FD815758-D7A2-4E9B-8A46-F0046AF434EE}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeService.Api", "EmployeeService\EmployeeService.Api\EmployeeService.Api.csproj", "{BA910DF4-24FD-481F-8B0A-3232D10B5DE0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserService", "UserService", "{25829512-2740-4D4D-A135-E439CF9A4C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShiftService.Persistence", "ShiftService\Shift.Persistence\ShiftService.Persistence\ShiftService.Persistence.csproj", "{690F048A-0774-4591-8D76-2DA50242837C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{BA910DF4-24FD-481F-8B0A-3232D10B5DE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA910DF4-24FD-481F-8B0A-3232D10B5DE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA910DF4-24FD-481F-8B0A-3232D10B5DE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{690F048A-0774-4591-8D76-2DA50242837C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{690F048A-0774-4591-8D76-2DA50242837C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{690F048A-0774-4591-8D76-2DA50242837C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{690F048A-0774-4591-8D76-2DA50242837C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{60277296-CDD9-4908-9A12-FAEC4D06E897} = {C82B254F-6800-42A3-9E82-8B0EF7570B96}
 		{4209DEBC-7EBF-4ABD-A685-F745C254FAE5} = {3072FE74-73B5-4A42-8166-CDA58C1FB904}
 		{BA910DF4-24FD-481F-8B0A-3232D10B5DE0} = {3072FE74-73B5-4A42-8166-CDA58C1FB904}
+		{690F048A-0774-4591-8D76-2DA50242837C} = {0B0D334A-BFB6-4D10-91DF-35B53E0D8B33}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70F9161F-837B-49BF-BEDD-521F6D50A7B9}

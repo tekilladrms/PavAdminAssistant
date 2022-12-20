@@ -20,9 +20,4 @@ internal class ChangeEmployeeValidator : AbstractValidator<ChangeEmployeeCommand
         RuleFor(changeEmployeeCommand => changeEmployeeCommand.employeeDto.PhoneNumber).Must(CheckMethods.IsValid<PhoneNumber, string>);
     }
 
-    private bool IsValid<TEntity, TValue>(TValue value) where TEntity : IValidable<TValue>
-    {
-        if (!TEntity.IsValid(value)) return false;
-        return true;
-    }
 }

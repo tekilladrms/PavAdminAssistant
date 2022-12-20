@@ -10,8 +10,4 @@
     <ProjectReference Include="..\..\SharedKernel\SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exceptions\Database\" />
-  </ItemGroup>
-
 </Project>

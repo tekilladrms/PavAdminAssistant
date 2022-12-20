@@ -123,7 +123,7 @@ public class EmployeeRepositoryTests
         // Act
 
         // Assert
-        Assert.ThrowsAsync<RecordsNotFoundException>(() => _employeeRepository.GetByIdAsync(Guid.NewGuid()));
+        Assert.ThrowsAsync<NotFoundException>(() => _employeeRepository.GetByIdAsync(Guid.NewGuid()));
     }
 
     [Fact]
@@ -184,7 +184,7 @@ public class EmployeeRepositoryTests
         _employeeRepository.Delete(employees[0].Guid);
 
         // Assert
-        Assert.ThrowsAsync<RecordsNotFoundException>(() => _employeeRepository.GetByIdAsync(_id));
+        Assert.ThrowsAsync<NotFoundException>(() => _employeeRepository.GetByIdAsync(_id));
     }
 
 }

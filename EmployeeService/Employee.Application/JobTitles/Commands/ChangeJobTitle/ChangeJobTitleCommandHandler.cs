@@ -26,7 +26,7 @@ public class ChangeJobTitleCommandHandler : IRequestHandler<ChangeJobTitleComman
 
         if (jobTitleResult is null)
         {
-            throw new RecordsNotFoundException(nameof(jobTitleResult));
+            throw new NotFoundException(nameof(jobTitleResult));
         }
 
         if (!jobTitleResult.JobTitleName.Value.Equals(request.JobTitleDto.JobTitleName))

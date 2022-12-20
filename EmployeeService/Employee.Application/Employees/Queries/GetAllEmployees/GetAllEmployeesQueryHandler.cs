@@ -27,7 +27,7 @@ public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery,
 
         if(results is null || !results.Any())
         {
-            throw new RecordsNotFoundException(nameof(results));
+            throw new NotFoundException(nameof(results));
         }
 
         return _mapper.Map<List<Employee>, List<EmployeeDto>>(results);

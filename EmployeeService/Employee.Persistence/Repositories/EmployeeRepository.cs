@@ -21,7 +21,7 @@ namespace EmployeeService.Persistence.Repositories
         {
             var employees = await _context.Set<Employee>().ToListAsync();
 
-            if (employees is null) throw new RecordsNotFoundException("no records in database");
+            if (employees is null) throw new NotFoundException("no records in database");
 
             return employees;
         }
@@ -30,7 +30,7 @@ namespace EmployeeService.Persistence.Repositories
         {
             var employee = await _context.Set<Employee>().FirstOrDefaultAsync(emp => emp.Guid == id);
 
-            if (employee is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
+            if (employee is null) throw new NotFoundException($"Record with Id = {id} is not exist");
 
             return employee;
         }
@@ -54,7 +54,7 @@ namespace EmployeeService.Persistence.Repositories
         {
             Employee? emp = _context.Set<Employee>().FirstOrDefault(empl => empl.Guid == id);
 
-            if (emp is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
+            if (emp is null) throw new NotFoundException($"Record with Id = {id} is not exist");
 
             _context.Remove(emp);
         }

@@ -1,3 +1,4 @@
+using EmployeeService.Api.Middleware;
 using EmployeeService.Application;
 using EmployeeService.Domain.Repositories;
 using EmployeeService.Persistence;
@@ -31,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCustomExceptionHandler();
 
 app.UseHttpsRedirection();
 

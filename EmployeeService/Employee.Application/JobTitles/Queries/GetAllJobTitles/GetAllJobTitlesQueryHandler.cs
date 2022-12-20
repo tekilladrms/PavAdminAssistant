@@ -27,7 +27,7 @@ public class GetAllJobTitlesQueryHandler : IRequestHandler<GetAllJobTitlesQuery,
     {
         var jobTitles = await _context.Set<JobTitle>().AsNoTracking().ToListAsync();
 
-        if (jobTitles is null || !jobTitles.Any()) throw new RecordsNotFoundException(nameof(jobTitles));
+        if (jobTitles is null || !jobTitles.Any()) throw new NotFoundException(nameof(jobTitles));
 
         return _mapper.Map<List<JobTitle>, List<JobTitleDto>>(jobTitles);
     }

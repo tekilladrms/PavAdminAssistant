@@ -21,14 +21,14 @@ public class SetJobTitleIdToEmployeeCommandHandler : IRequestHandler<SetJobTitle
 
         if (employee is null)
         {
-            throw new RecordsNotFoundException(nameof(employee));
+            throw new NotFoundException(nameof(employee));
         }
 
         var jobTitle = await _unitOfWork.JobTitleRepository.GetByIdAsync(request.JobTitleId);
 
         if (jobTitle is null)
         {
-            throw new RecordsNotFoundException(nameof(jobTitle));
+            throw new NotFoundException(nameof(jobTitle));
         }
 
         employee.ChangeJobTitleId(request.JobTitleId);

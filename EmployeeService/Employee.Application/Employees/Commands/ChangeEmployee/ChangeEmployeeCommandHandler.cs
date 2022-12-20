@@ -28,7 +28,7 @@ public class ChangeEmployeeCommandHandler : IRequestHandler<ChangeEmployeeComman
 
         if (employee is null)
         {
-            throw new RecordsNotFoundException(nameof(employee));
+            throw new NotFoundException(nameof(employee));
         }
 
         if (employee.FirstName.Value != request.employeeDto.FirstName)

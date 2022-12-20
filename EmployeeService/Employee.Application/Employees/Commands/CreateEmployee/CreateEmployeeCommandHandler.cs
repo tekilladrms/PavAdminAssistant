@@ -24,24 +24,17 @@ internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmplo
 
     public async Task<EmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var firstNameResult = Name.Create(request.employeeDto.FirstName);
-        var lastNameResult = Name.Create(request.employeeDto.LastName);
-        var phoneNumber = PhoneNumber.Create(request.employeeDto.PhoneNumber);
-        DateOnly birthDate = DateOnly.Parse(request.employeeDto.BirthDate);
-        var jobTitleId = request.employeeDto.JobTitleId;
-        
-
         var employee = Employee.Create(
-            Guid.NewGuid(),
-            firstNameResult.Value,
-            lastNameResult.Value,
-            phoneNumber.Value,
-            birthDate,
-            jobTitleId);
+            request.employeeDto.FirstName,
+            request.employeeDto.LastName,
+            request.employeeDto.PhoneNumber,
+            DateOnly.Parse(request.employeeDto.BirthDate),
+            request.employeeDto.JobTitleId);
 
         await _unitOfWork.EmployeeRepository.AddAsync(employee);
 
         await _unitOfWork.SaveChangesAsync();
+
         return _mapper.Map<EmployeeDto>(await _unitOfWork.EmployeeRepository.GetByIdAsync(employee.Guid));
 
     }

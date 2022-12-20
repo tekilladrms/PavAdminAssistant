@@ -1,11 +1,12 @@
 
 using EmployeeService.Domain.Enums;
 using EmployeeService.Domain.Exceptions;
+using SharedKernel.Interfaces;
 using SharedKernel.Primitives;
 using System.Collections.Generic;
 
 namespace EmployeeService.Domain.ValueObjects;
-public class Salary : ValueObject
+public class Salary : ValueObject, IValidable<decimal>
 {
     public Money Money { get; private set; } = Money.Create(0, Currency.RUB);
     public SalaryType SalaryType { get; private set; } = SalaryType.PerHour;
@@ -22,7 +23,7 @@ public class Salary : ValueObject
 
     public static Salary Create(Money money, SalaryType salaryType)
     {
-        if (money.Amount < 0) throw new ValueIsLessThanZeroDomainException(money.Amount);
+        if (!IsValid(money.Amount)) throw new IncorrectParameterDomainException(nameof(money));
         return new Salary(money, salaryType);
     }
 
@@ -35,5 +36,13 @@ public class Salary : ValueObject
     {
         yield return Money;
         yield return SalaryType;
+    }
+
+
+    public static bool IsValid(decimal value)
+    {
+        if(value < 0) return false;
+
+        return true;
     }
 }

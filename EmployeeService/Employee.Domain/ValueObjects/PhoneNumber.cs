@@ -1,11 +1,12 @@
 
 using EmployeeService.Domain.Exceptions;
+using SharedKernel.Interfaces;
 using SharedKernel.Primitives;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace EmployeeService.Domain.ValueObjects;
-public class PhoneNumber : ValueObject
+public class PhoneNumber : ValueObject, IValidable<string>
 {
     public string Value { get; private set; } = string.Empty;
 
@@ -22,7 +23,7 @@ public class PhoneNumber : ValueObject
         return new PhoneNumber(value);
     }
 
-    private static bool IsValid(string value)
+    public static bool IsValid(string value)
     {
         string pattern = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$";
         Match isMatch = Regex.Match(value, pattern, RegexOptions.IgnoreCase);
@@ -34,4 +35,5 @@ public class PhoneNumber : ValueObject
     {
         yield return Value;
     }
+
 }

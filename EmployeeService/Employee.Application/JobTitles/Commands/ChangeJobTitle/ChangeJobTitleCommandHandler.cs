@@ -8,50 +8,50 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmployeeService.Application.JobTitles.ChangeJobTitle;
+namespace EmployeeService.Application.JobTitles.Commands.ChangeJobTitle;
 
 public class ChangeJobTitleCommandHandler : IRequestHandler<ChangeJobTitleCommand, JobTitleDto>
 {
-    private readonly IJobTitleRepository _jobTitleRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ChangeJobTitleCommandHandler(IUnitOfWork unitOfWork, IJobTitleRepository jobTitleRepository, IMapper mapper)
+    public ChangeJobTitleCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _jobTitleRepository = jobTitleRepository;
         _mapper = mapper;
     }
     public async Task<JobTitleDto> Handle(ChangeJobTitleCommand request, CancellationToken cancellationToken)
     {
-        var jobTitleResult = await _jobTitleRepository.GetByIdAsync(request.id);
+        var jobTitleResult = await _unitOfWork.JobTitleRepository.GetByIdAsync(request.JobTitleDto.Id);
 
         if (jobTitleResult is null)
         {
             throw new RecordsNotFoundException(nameof(jobTitleResult));
         }
 
-        if (!jobTitleResult.JobTitleName.Value.Equals(request.jobTitleDto.JobTitleName))
+        if (!jobTitleResult.JobTitleName.Value.Equals(request.JobTitleDto.JobTitleName))
         {
-            jobTitleResult.ChangeName(Name.Create(request.jobTitleDto.JobTitleName));
+            jobTitleResult.ChangeName(Name.Create(request.JobTitleDto.JobTitleName));
         }
 
-        if(jobTitleResult.Salary.Money.Amount != request.jobTitleDto.SalaryAmount || 
-            jobTitleResult.Salary.SalaryType != request.jobTitleDto.SalaryType)
+        if (jobTitleResult.Salary.Money.Amount != request.JobTitleDto.SalaryAmount ||
+            jobTitleResult.Salary.SalaryType != request.JobTitleDto.SalaryType)
         {
             jobTitleResult.ChangeSalary(Salary.Create(
-                Money.Create(request.jobTitleDto.SalaryAmount, request.jobTitleDto.SalaryCurrency), 
-                request.jobTitleDto.SalaryType));
+                Money.Create(request.JobTitleDto.SalaryAmount, request.JobTitleDto.SalaryCurrency),
+                request.JobTitleDto.SalaryType));
         }
 
-        if(jobTitleResult.PercentageOfSales.Value != request.jobTitleDto.PercentageOfSales)
+        if (jobTitleResult.PercentageOfSales.Value != request.JobTitleDto.PercentageOfSales)
         {
-            jobTitleResult.ChangePercentageOfSales(PercentageOfSales.Create(request.jobTitleDto.PercentageOfSales));
+            jobTitleResult.ChangePercentageOfSales(PercentageOfSales.Create(request.JobTitleDto.PercentageOfSales));
         }
 
-        _jobTitleRepository.Update(jobTitleResult);
+        _unitOfWork.JobTitleRepository.Update(jobTitleResult);
 
         await _unitOfWork.SaveChangesAsync();
+
+        jobTitleResult = await _unitOfWork.JobTitleRepository.GetByIdAsync(jobTitleResult.Guid);
 
         return _mapper.Map<JobTitle, JobTitleDto>(jobTitleResult);
     }

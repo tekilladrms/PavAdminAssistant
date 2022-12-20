@@ -8,20 +8,18 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Primitives;
 using SharedKernel.Repositories;
+using System.Linq;
 
 namespace EmployeeService.Persistence.Repositories;
 
 public sealed class JobTitleRepository : IJobTitleRepository
 {
     private readonly ApplicationDbContext _context;
-    public JobTitleRepository(ApplicationDbContext dbContext)
-    {
-        _context = dbContext;
-    }
+    public JobTitleRepository(ApplicationDbContext dbContext) => _context = dbContext;
 
     public async Task<IEnumerable<JobTitle>> GetAllAsync(CancellationToken cancellationToken)
     {
-        var jobTitles = await _context.Set<JobTitle>().AsNoTracking().ToListAsync(cancellationToken);
+        var jobTitles = await _context.Set<JobTitle>().ToListAsync(cancellationToken);
 
         if (jobTitles is null || jobTitles.Count == 0) throw new RecordsNotFoundException(nameof(jobTitles));
 
@@ -30,15 +28,12 @@ public sealed class JobTitleRepository : IJobTitleRepository
 
     public async Task<JobTitle> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var jobTitle = await _context.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == id);
+        var jobTitle = await _context.Set<JobTitle>().FirstOrDefaultAsync(jt => jt.Guid == id);
 
         if (jobTitle is null) throw new RecordsNotFoundException(nameof(jobTitle));
 
         return jobTitle;
     }
-
-    
-
 
     public async Task<JobTitle> AddAsync(JobTitle entity, CancellationToken cancellationToken = default)
     {
@@ -56,7 +51,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
 
     public void Delete(Guid id, CancellationToken cancellationToken = default)
     {
-        var jt = _context.Set<JobTitle>().FirstOrDefaultAsync(jobT => jobT.Guid == id);
+        JobTitle? jt = _context.Set<JobTitle>().FirstOrDefault(jobT => jobT.Guid == id);
 
         if (jt is null) throw new RecordsNotFoundException($"Record with Id = {id} is not exist");
 

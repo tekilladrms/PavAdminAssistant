@@ -15,10 +15,8 @@ namespace EmployeeService.Persistence.Repositories
     public class EmployeeRepository : IEmployeeRepository
     {
         private readonly ApplicationDbContext _context;
-        public EmployeeRepository(ApplicationDbContext applicationDbContext)
-        {
-            _context = applicationDbContext;
-        }
+        public EmployeeRepository(ApplicationDbContext applicationDbContext) => _context = applicationDbContext;
+
         public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var employees = await _context.Set<Employee>().ToListAsync();
@@ -36,12 +34,20 @@ namespace EmployeeService.Persistence.Repositories
 
             return employee;
         }
+
         public async Task<Employee> AddAsync(Employee entity, CancellationToken cancellationToken = default)
         {
             if(entity is null) throw new ArgumentNullException(nameof(entity));
             var result = await _context.Set<Employee>().AddAsync(entity);
 
             return result.Entity;
+        }
+
+        public Employee Update(Employee entity, CancellationToken cancellationToken = default)
+        {
+            _context.Set<Employee>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            return entity;
         }
 
         public void Delete(Guid id, CancellationToken cancellationToken = default)
@@ -62,11 +68,6 @@ namespace EmployeeService.Persistence.Repositories
             _context.Remove(entity);
         }
 
-        public Employee Update(Employee entity, CancellationToken cancellationToken = default)
-        {
-            _context.Set<Employee>().Attach(entity);
-            _context.Entry(entity).State = EntityState.Modified;
-            return entity;
-        }
+        
     }
 }

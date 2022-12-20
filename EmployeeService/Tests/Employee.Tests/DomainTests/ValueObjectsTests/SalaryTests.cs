@@ -10,7 +10,7 @@ public class SalaryTests
     [InlineData(-1, Currency.RUB,SalaryType.PerMonth)]
     public void CreateSalaryWithIncorrectValueParameterThrowsException(decimal value, Currency currency, SalaryType salaryType)
     {
-        Assert.Throws<ValueIsLessThanZeroDomainException>(() => Salary.Create(Money.Create(value, currency), salaryType));
+        Assert.Throws<IncorrectParameterDomainException>(() => Salary.Create(Money.Create(value, currency), salaryType));
     }
 
     [Theory]

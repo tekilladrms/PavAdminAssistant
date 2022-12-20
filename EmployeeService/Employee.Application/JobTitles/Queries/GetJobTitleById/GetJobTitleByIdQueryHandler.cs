@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmployeeService.Application.JobTitles.GetAllJobTitleById;
+namespace EmployeeService.Application.JobTitles.Queries.GetJobTitleById;
 
 public class GetJobTitleByIdQueryHandler : IRequestHandler<GetJobTitleByIdQuery, JobTitleDto>
 {
@@ -22,7 +22,7 @@ public class GetJobTitleByIdQueryHandler : IRequestHandler<GetJobTitleByIdQuery,
     }
     public async Task<JobTitleDto> Handle(GetJobTitleByIdQuery request, CancellationToken cancellationToken)
     {
-        var jobTitle = await _context.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == request.id);
+        var jobTitle = await _context.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == request.jobTitleId);
 
         if (jobTitle is null) throw new RecordsNotFoundException(nameof(jobTitle));
 

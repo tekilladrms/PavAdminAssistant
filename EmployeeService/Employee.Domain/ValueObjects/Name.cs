@@ -1,11 +1,12 @@
 
 using EmployeeService.Domain.Exceptions;
+using SharedKernel.Interfaces;
 using SharedKernel.Primitives;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace EmployeeService.Domain.ValueObjects;
-public class Name : ValueObject
+public class Name : ValueObject, IValidable<string>
 {
     public string Value { get; private set; } = string.Empty;
 
@@ -22,7 +23,7 @@ public class Name : ValueObject
         return new Name(value);
     }
 
-    private static bool IsValid(string value)
+    public static bool IsValid(string value)
     {
         string pattern = @"(?=^.{1,20}$)\w\D";
         var isMatch = Regex.IsMatch(value, pattern, RegexOptions.IgnoreCase);
@@ -33,4 +34,6 @@ public class Name : ValueObject
     {
         yield return Value;
     }
+
+    
 }

@@ -17,21 +17,21 @@ public class JobTitle : Entity
     //for EF
     private JobTitle() { }
 
-    private JobTitle(Guid id, Name name, Salary salary, PercentageOfSales percentageOfSales)
+    private JobTitle(Name name, Salary salary, PercentageOfSales percentageOfSales)
     {
         JobTitleName = name;
         Salary = salary;
         PercentageOfSales = percentageOfSales;
     }
 
-    public static JobTitle Create(Guid id, Name name, Salary salary, PercentageOfSales percentageOfSales)
+    public static JobTitle Create(Name name, Salary salary, PercentageOfSales percentageOfSales)
     {
         if (name is null) throw new ArgumentNullDomainException(nameof(name));
         if (salary is null) throw new ArgumentNullDomainException(nameof(salary));
         if (percentageOfSales is null) throw new ArgumentNullDomainException(nameof(percentageOfSales));
         
 
-        return new JobTitle(id, name, salary, percentageOfSales);
+        return new JobTitle(name, salary, percentageOfSales);
     }
 
     

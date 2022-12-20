@@ -8,37 +8,28 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmployeeService.Application.JobTitles.CreateJobTitle;
+namespace EmployeeService.Application.JobTitles.Commands.CreateJobTitle;
 
 public class CreateJobCommandHandler : IRequestHandler<CreateJobTitleCommand, JobTitleDto>
 {
-    private readonly IJobTitleRepository _jobTitleRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateJobCommandHandler(IUnitOfWork unitOfWork, IJobTitleRepository jobTitleRepository, IMapper mapper)
+    public CreateJobCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _jobTitleRepository = jobTitleRepository;
         _mapper = mapper;
     }
     public async Task<JobTitleDto> Handle(CreateJobTitleCommand request, CancellationToken cancellationToken)
     {
-        var jobTitleNameResult = Name.Create(request.JobTitleDto.JobTitleName);
-
-        var salaryResult = Salary.Create(
-            Money.Create(request.JobTitleDto.SalaryAmount, request.JobTitleDto.SalaryCurrency), 
-            request.JobTitleDto.SalaryType);
-
-        var percentageOfSalesResult = PercentageOfSales.Create(request.JobTitleDto.PercentageOfSales);
-
         var jobTitle = JobTitle.Create(
-            Guid.NewGuid(),
-            jobTitleNameResult,
-            salaryResult,
-            percentageOfSalesResult);
+            Name.Create(request.JobTitleDto.JobTitleName),
+            Salary.Create(
+                Money.Create(request.JobTitleDto.SalaryAmount, request.JobTitleDto.SalaryCurrency),
+                request.JobTitleDto.SalaryType),
+            PercentageOfSales.Create(request.JobTitleDto.PercentageOfSales));
 
-        await _jobTitleRepository.AddAsync(jobTitle);
+        await _unitOfWork.JobTitleRepository.AddAsync(jobTitle);
 
         await _unitOfWork.SaveChangesAsync();
 

@@ -9,26 +9,22 @@ namespace EmployeeService.Application.Employees.Commands.SetJobTitleIdToEmployee
 
 public class SetJobTitleIdToEmployeeCommandHandler : IRequestHandler<SetJobTitleIdToEmployeeCommand>
 {
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IJobTitleRepository _jobTitleRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public SetJobTitleIdToEmployeeCommandHandler(IEmployeeRepository employeeRepository, IJobTitleRepository jobTitleRepository, IUnitOfWork unitOfWork)
+    public SetJobTitleIdToEmployeeCommandHandler(IUnitOfWork unitOfWork)
     {
-        _employeeRepository = employeeRepository;
-        _jobTitleRepository = jobTitleRepository;
         _unitOfWork = unitOfWork;
     }
     public async Task<Unit> Handle(SetJobTitleIdToEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId);
+        var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.EmployeeId);
 
         if (employee is null)
         {
             throw new RecordsNotFoundException(nameof(employee));
         }
 
-        var jobTitle = await _jobTitleRepository.GetByIdAsync(request.JobTitleId);
+        var jobTitle = await _unitOfWork.JobTitleRepository.GetByIdAsync(request.JobTitleId);
 
         if (jobTitle is null)
         {

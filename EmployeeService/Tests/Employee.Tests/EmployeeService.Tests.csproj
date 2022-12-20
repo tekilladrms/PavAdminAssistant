@@ -31,7 +31,6 @@
   <ItemGroup>
     <Folder Include="ApiTests\ControllersTests\EmployeesController\" />
     <Folder Include="ApiTests\ControllersTests\JobTitlesController\" />
-    <Folder Include="ApplicationTests\EmployeesTests\CommandsTests\" />
     <Folder Include="DomainTests\ValueObjectsTests\" />
     <Folder Include="PersistenceTests\SpecificationsTests\" />
   </ItemGroup>

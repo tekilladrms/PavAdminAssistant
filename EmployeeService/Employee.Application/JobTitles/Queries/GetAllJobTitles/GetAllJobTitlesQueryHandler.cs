@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmployeeService.Application.JobTitles.GetAllJobTitles;
+namespace EmployeeService.Application.JobTitles.Queries.GetAllJobTitles;
 
 public class GetAllJobTitlesQueryHandler : IRequestHandler<GetAllJobTitlesQuery, List<JobTitleDto>>
 {

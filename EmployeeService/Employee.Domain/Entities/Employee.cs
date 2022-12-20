@@ -19,7 +19,6 @@ public sealed class Employee : AggregateRoot
     
 
     private Employee(
-        Guid id,
         string firstName,
         string lastName,
         string phoneNumber,
@@ -36,7 +35,6 @@ public sealed class Employee : AggregateRoot
     }
 
     public static Employee Create(
-        Guid id,
         string firstName,
         string lastName,
         string phoneNumber,
@@ -50,7 +48,6 @@ public sealed class Employee : AggregateRoot
 
 
         return new Employee(
-            id,
             firstName,
             lastName,
             phoneNumber,

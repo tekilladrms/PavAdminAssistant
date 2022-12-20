@@ -1,10 +1,9 @@
 ﻿using EmployeeService.Application.DTO;
-using EmployeeService.Application.Employees.Commands.DeleteEmployee;
-using EmployeeService.Application.Employees.Queries.GetEmployeeById;
-using EmployeeService.Application.JobTitles.ChangeJobTitle;
-using EmployeeService.Application.JobTitles.CreateJobTitle;
-using EmployeeService.Application.JobTitles.GetAllJobTitleById;
-using EmployeeService.Application.JobTitles.GetAllJobTitles;
+using EmployeeService.Application.JobTitles.Commands.ChangeJobTitle;
+using EmployeeService.Application.JobTitles.Commands.CreateJobTitle;
+using EmployeeService.Application.JobTitles.Commands.DeleteJobTitle;
+using EmployeeService.Application.JobTitles.Queries.GetAllJobTitles;
+using EmployeeService.Application.JobTitles.Queries.GetJobTitleById;
 using EmployeeService.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -70,9 +69,9 @@ namespace EmployeeService.Api.Controllers
 
         // PUT api/<JobTitlesController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id, [FromBody] JobTitleDto request)
+        public async Task<IActionResult> Put([FromBody] JobTitleDto request)
         {
-            var jobTitleDtoResult = await _mediator.Send(new ChangeJobTitleCommand(id, request));
+            var jobTitleDtoResult = await _mediator.Send(new ChangeJobTitleCommand(request));
 
             if (jobTitleDtoResult is null)
             {
@@ -83,9 +82,9 @@ namespace EmployeeService.Api.Controllers
 
         // DELETE api/<JobTitlesController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id, [FromBody] EmployeeDto request)
+        public void Delete(Guid id)
         {
-            
+            _mediator.Send(new DeleteJobTitleCommand(id));
         }
     }
 }

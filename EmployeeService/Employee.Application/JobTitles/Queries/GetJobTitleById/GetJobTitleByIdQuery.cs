@@ -3,6 +3,6 @@ using MediatR;
 using System;
 using System.Collections.Generic;
 
-namespace EmployeeService.Application.JobTitles.GetAllJobTitleById;
+namespace EmployeeService.Application.JobTitles.Queries.GetJobTitleById;
 
-public sealed record GetJobTitleByIdQuery(Guid id) : IRequest<JobTitleDto>;
+public sealed record GetJobTitleByIdQuery(Guid jobTitleId) : IRequest<JobTitleDto>;

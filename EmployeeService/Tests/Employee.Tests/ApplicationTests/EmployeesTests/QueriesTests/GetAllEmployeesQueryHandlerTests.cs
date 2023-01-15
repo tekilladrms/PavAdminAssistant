@@ -25,10 +25,10 @@ public class GetAllEmployeesQueryHandlerTests
         _contextMock = new();
         _contextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(new List<Employee>
         {
-            Employee.Create(Guid.NewGuid(), "Alex", "Alex", "89659001559", DateOnly.Parse("25.10.1980"), Guid.NewGuid()),
-            Employee.Create(Guid.NewGuid(), "Ivan", "Ivan", "89659001558", DateOnly.Parse("25.10.1981"), Guid.NewGuid()),
-            Employee.Create(Guid.NewGuid(), "Vasya", "Vasya", "89659001557", DateOnly.Parse("25.10.1982"), Guid.NewGuid()),
-            Employee.Create(Guid.NewGuid(), "Vova", "Vova", "89659001556", DateOnly.Parse("25.10.1983"), Guid.NewGuid()),
+            Employee.Create("Alex", "Alex", "89659001559", DateOnly.Parse("25.10.1980"), Guid.NewGuid()),
+            Employee.Create("Ivan", "Ivan", "89659001558", DateOnly.Parse("25.10.1981"), Guid.NewGuid()),
+            Employee.Create("Vasya", "Vasya", "89659001557", DateOnly.Parse("25.10.1982"), Guid.NewGuid()),
+            Employee.Create("Vova", "Vova", "89659001556", DateOnly.Parse("25.10.1983"), Guid.NewGuid()),
             
         });
 

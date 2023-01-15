@@ -23,7 +23,7 @@ public class Salary : ValueObject, IValidable<decimal>
 
     public static Salary Create(Money money, SalaryType salaryType)
     {
-        if (!IsValid(money.Amount)) throw new IncorrectParameterDomainException(nameof(money));
+        if (!IsValid(money.Amount)) throw new ArgumentIsNotValidDomainException<Money>(money);
         return new Salary(money, salaryType);
     }
 

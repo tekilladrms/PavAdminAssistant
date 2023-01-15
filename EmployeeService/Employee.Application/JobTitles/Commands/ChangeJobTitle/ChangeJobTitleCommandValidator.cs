@@ -1,4 +1,4 @@
-﻿using EmployeeService.Application.ValidationMethod;
+﻿using EmployeeService.Application.ValidationMethods;
 using EmployeeService.Domain.ValueObjects;
 using FluentValidation;
 using System;

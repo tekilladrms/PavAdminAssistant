@@ -19,7 +19,7 @@ public class Name : ValueObject, IValidable<string>
     public static Name Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullDomainException(nameof(value));
-        if (!IsValid(value)) throw new IncorrectParameterDomainException(nameof(value));
+        if (!IsValid(value)) throw new ArgumentIsNotValidDomainException<string>(nameof(value));
         return new Name(value);
     }
 

@@ -26,7 +26,7 @@ public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery,
 
         if (employee is null)
         {
-            throw new NotFoundException(nameof(request.EmployeeId));
+            throw new NotFoundException($"Not found record with id: {request.EmployeeId}");
         }
 
         return _mapper.Map<EmployeeDto>(employee);

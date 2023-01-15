@@ -5,6 +5,7 @@ using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Persistence;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery,
     }
     public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken = default)
     {
-        var employee = await _context.Set<Employee>().AsNoTracking().FirstOrDefaultAsync(emp => emp.Guid == request.EmployeeId, cancellationToken);
+        var employee = await _context.Set<Employee>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(emp => emp.Guid.ToString() == request.EmployeeId, cancellationToken);
 
         if (employee is null)
         {

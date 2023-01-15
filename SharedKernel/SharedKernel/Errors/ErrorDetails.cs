@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace EmployeeService.Domain.Errors
+namespace EmployeeService.SharedKernel.Errors
 {
     public class ErrorDetails
     {

@@ -36,7 +36,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCustomExceptionHandler();
+app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+
+app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
 

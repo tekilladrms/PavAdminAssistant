@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using EmployeeService.Application.ValidationMethods;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ internal class GetEmployeeByIdQueryValidator : AbstractValidator<GetEmployeeById
 {
     public GetEmployeeByIdQueryValidator()
     {
-        RuleFor(getEmployeeByIdQuery => getEmployeeByIdQuery.EmployeeId).NotEqual(Guid.Empty);
+        RuleFor(getEmployeeByIdQuery => getEmployeeByIdQuery.EmployeeId)
+            .Must(CheckMethods.IsGuid)
+            .WithMessage("employeeId must be guid");
     }
 }

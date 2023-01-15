@@ -1,12 +1,9 @@
-﻿using EmployeeService.Domain.Errors;
-using EmployeeService.Domain.Exceptions;
-using EmployeeService.Domain.Exceptions.Database;
+﻿using EmployeeService.Domain.Exceptions;
+using EmployeeService.SharedKernel.Errors;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 

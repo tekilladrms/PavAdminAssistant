@@ -34,7 +34,7 @@ namespace EmployeeService.Api.Controllers
 
         // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployeeById(Guid id) => Ok(await _mediator.Send(new GetEmployeeByIdQuery(id)));
+        public async Task<IActionResult> GetEmployeeById([FromQuery] string id) => Ok(await _mediator.Send(new GetEmployeeByIdQuery(id)));
 
 
         // POST api/<EmployeeController>

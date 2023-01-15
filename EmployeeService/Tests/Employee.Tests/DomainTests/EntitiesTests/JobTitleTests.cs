@@ -25,7 +25,7 @@ public class JobTitleTests
     [InlineData("Admin  ", -0.5, Currency.USD, SalaryType.PerHour, -1)]
     public void CreateJobTitleWithIncorrectSalaryAndPercentageOfSalesParametersThrowingException(string name, decimal salaryAmount, Currency salaryCurrency, SalaryType salaryType, decimal percentageOfSales)
     {
-        Assert.Throws<ArgumentIsNotValidDomainException<JobTitle>>(() => JobTitle.Create(
+        Assert.Throws<ArgumentIsNotValidDomainException<Money>>(() => JobTitle.Create(
             Name.Create(name),
             Salary.Create(Money.Create(salaryAmount, salaryCurrency), salaryType),
             PercentageOfSales.Create(percentageOfSales)));

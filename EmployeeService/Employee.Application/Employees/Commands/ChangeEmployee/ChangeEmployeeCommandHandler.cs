@@ -1,12 +1,8 @@
 using AutoMapper;
 using EmployeeService.Application.DTO;
-using EmployeeService.Domain.Exceptions;
 using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Domain.Repositories;
-using EmployeeService.Domain.ValueObjects;
-using EmployeeService.Persistence;
 using MediatR;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 

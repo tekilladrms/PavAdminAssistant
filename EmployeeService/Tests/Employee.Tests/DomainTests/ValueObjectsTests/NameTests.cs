@@ -21,7 +21,7 @@ public class NameTests
     [InlineData("jsdhalfjkasldkjfhlaskjdfhlaskjdfhlkajsdhflkjasdhflkjasdhf")]
     public void CreateNameWithIncorrectParameterThrowsException(string value)
     {
-        Assert.Throws<IncorrectParameterDomainException>(() => Name.Create(value));
+        Assert.Throws<ArgumentIsNotValidDomainException<Name>>(() => Name.Create(value));
     }
 
     [Theory]

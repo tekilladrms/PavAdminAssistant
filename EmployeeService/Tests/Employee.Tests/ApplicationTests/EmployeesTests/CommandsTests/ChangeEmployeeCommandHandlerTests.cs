@@ -1,12 +1,8 @@
-
 using AutoMapper;
 using EmployeeService.Application;
 using EmployeeService.Application.DTO;
 using EmployeeService.Application.Employees.Commands.ChangeEmployee;
-using EmployeeService.Application.Employees.Commands.CreateEmployee;
 using EmployeeService.Domain.Entities;
-using EmployeeService.Domain.Repositories;
-using EmployeeService.Domain.ValueObjects;
 using EmployeeService.Persistence;
 using EmployeeService.Persistence.Repositories;
 using EmployeeService.Tests.PersistenceTests;
@@ -46,7 +42,6 @@ public class ChangeEmployeeCommandHandlerTests
         var employees = new List<Employee>
         {
             Employee.Create(
-                _id,
             "Alex",
             "Fedurin",
             "87654321110",
@@ -54,14 +49,12 @@ public class ChangeEmployeeCommandHandlerTests
             Guid.NewGuid()
             ),
             Employee.Create(
-                Guid.NewGuid(),
             "Ivan",
             "Ivanov",
             "87654321111",
             DateOnly.Parse("25.10.1989"),
             Guid.NewGuid()),
             Employee.Create(
-                Guid.NewGuid(),
             "Petr",
             "Petrov",
             "87654321112",

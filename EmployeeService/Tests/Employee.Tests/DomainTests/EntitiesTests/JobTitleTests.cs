@@ -15,7 +15,6 @@ public class JobTitleTests
     public void CreateJobTitleWithNullOrWhiteSpaceNameParameterThrowingException(string name, decimal salaryAmount, Currency salaryCurrency, SalaryType salaryType, decimal percentageOfSales)
     {
         Assert.Throws<ArgumentNullDomainException>(() => JobTitle.Create(
-            Guid.NewGuid(),
             Name.Create(name),
             Salary.Create(Money.Create(salaryAmount, salaryCurrency), salaryType),
             PercentageOfSales.Create(percentageOfSales)));
@@ -26,8 +25,7 @@ public class JobTitleTests
     [InlineData("Admin  ", -0.5, Currency.USD, SalaryType.PerHour, -1)]
     public void CreateJobTitleWithIncorrectSalaryAndPercentageOfSalesParametersThrowingException(string name, decimal salaryAmount, Currency salaryCurrency, SalaryType salaryType, decimal percentageOfSales)
     {
-        Assert.Throws<IncorrectParameterDomainException>(() => JobTitle.Create(
-            Guid.NewGuid(),
+        Assert.Throws<ArgumentIsNotValidDomainException<JobTitle>>(() => JobTitle.Create(
             Name.Create(name),
             Salary.Create(Money.Create(salaryAmount, salaryCurrency), salaryType),
             PercentageOfSales.Create(percentageOfSales)));
@@ -38,7 +36,6 @@ public class JobTitleTests
     public void CreateJobTitleWithCorrectParametersReturnsInstance(string name, decimal salaryAmount, Currency salaryCurrency, SalaryType salaryType, decimal percentageOfSales)
     {
         Assert.NotNull(JobTitle.Create(
-            Guid.NewGuid(),
             Name.Create(name),
             Salary.Create(Money.Create(salaryAmount, salaryCurrency), salaryType),
             PercentageOfSales.Create(percentageOfSales)));

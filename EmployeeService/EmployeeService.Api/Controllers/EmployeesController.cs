@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using EmployeeService.Application.Employees.Commands.CreateEmployee;
 using EmployeeService.Application.Employees.Commands.ChangeEmployee;
-using EmployeeService.Domain.Exceptions;
+using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Application.Employees.Commands.DeleteEmployee;
+using EmployeeService.Domain.ValueObjects;
 
 
 
@@ -28,33 +29,12 @@ namespace EmployeeService.Api.Controllers
 
         // GET: api/<EmployeeController>
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var employees = await _mediator.Send(new GetAllEmployeesQuery());
-
-            if (employees is null || employees.Count == 0)
-            {
-                return NotFound();
-            }
-            
-            return Ok(employees.ToList());
-        }
+        public async Task<IActionResult> GetAll() => Ok(await _mediator.Send(new GetAllEmployeesQuery()));
 
 
         // GET api/<EmployeeController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployeeById(Guid id)
-        {
-            var employeeDto = await _mediator.Send(new GetEmployeeByIdQuery(id));
-
-
-            if (employeeDto is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(employeeDto);
-        }
+        public async Task<IActionResult> GetEmployeeById(Guid id) => Ok(await _mediator.Send(new GetEmployeeByIdQuery(id)));
 
 
         // POST api/<EmployeeController>
@@ -73,7 +53,7 @@ namespace EmployeeService.Api.Controllers
         {
             var employeeDto = await _mediator.Send(new ChangeEmployeeCommand(request));
 
-            if (employeeDto is null) throw new EmployeeNotFoundException(nameof(employeeDto));
+            if (employeeDto is null) throw new NotFoundException(nameof(employeeDto));
 
             return Ok(employeeDto);
         }

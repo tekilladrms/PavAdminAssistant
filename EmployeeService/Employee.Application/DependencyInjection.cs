@@ -10,17 +10,20 @@ using System.Reflection;
 using FluentValidation;
 using EmployeeService.Application.Behaviors;
 
-namespace EmployeeService.Application
+namespace EmployeeService.Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
-        {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddAutoMapper(AssemblyReference.Assembly);
-            return services;
-        }
+        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(AssemblyReference.Assembly, includeInternalTypes: true);
+
+        services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPiplineBehavior<,>));
+
+        //services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
+        //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipilineBehavior<,>));
+        services.AddAutoMapper(AssemblyReference.Assembly);
+        return services;
     }
 }

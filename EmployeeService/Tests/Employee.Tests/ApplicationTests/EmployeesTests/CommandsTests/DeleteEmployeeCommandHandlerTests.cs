@@ -45,7 +45,6 @@ public class DeleteEmployeeCommandHandlerTests
         var employees = new List<Employee>
         {
             Employee.Create(
-                _id,
             "Alex",
             "Fedurin",
             "87654321110",
@@ -53,14 +52,12 @@ public class DeleteEmployeeCommandHandlerTests
             Guid.NewGuid()
             ),
             Employee.Create(
-                Guid.NewGuid(),
             "Ivan",
             "Ivanov",
             "87654321111",
             DateOnly.Parse("25.10.1989"),
             Guid.NewGuid()),
             Employee.Create(
-                Guid.NewGuid(),
             "Petr",
             "Petrov",
             "87654321112",

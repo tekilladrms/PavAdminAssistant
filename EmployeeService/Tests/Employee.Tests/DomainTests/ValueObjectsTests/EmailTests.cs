@@ -15,14 +15,14 @@ public class EmailTests
     [InlineData("   ")]
     public void CreateEmailWithEmptyStringArgumentThrowingException(string email)
     {
-        Assert.Throws<IncorrectParameterDomainException>(() => Email.Create(email));
+        Assert.Throws<ArgumentIsNotValidDomainException<Email>>(() => Email.Create(email));
     }
 
     [Theory]
     [InlineData("sdjfhksadjfhksadhf.com")]
     public void CreateEmailWithIncorrectStringArgumentThrowingException(string email)
     {
-        Assert.Throws<IncorrectParameterDomainException>(() => Email.Create(email));
+        Assert.Throws<ArgumentIsNotValidDomainException<Email>>(() => Email.Create(email));
     }
 
     [Theory]

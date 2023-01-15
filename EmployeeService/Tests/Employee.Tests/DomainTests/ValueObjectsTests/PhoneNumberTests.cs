@@ -18,6 +18,6 @@ public class PhoneNumberTests
     [InlineData("-796-590-01-995")]
     public void CreatePhoneNumberWithIncorrectParameterThrowsException(string value)
     {
-        Assert.Throws<IncorrectParameterDomainException>(() => PhoneNumber.Create(value));
+        Assert.Throws<ArgumentIsNotValidDomainException<PhoneNumber>>(() => PhoneNumber.Create(value));
     }
 }

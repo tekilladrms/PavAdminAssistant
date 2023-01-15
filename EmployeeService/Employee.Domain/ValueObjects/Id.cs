@@ -23,7 +23,7 @@ public class Id : ValueObject
     }
     public Id(DateOnly dateOnly)
     {
-        if (dateOnly == DateOnly.MinValue) throw new IncorrectParameterDomainException(nameof(dateOnly));
+        if (dateOnly == DateOnly.MinValue) throw new ArgumentIsNotValidDomainException<Id>(nameof(dateOnly));
         DateOnly = dateOnly;
     }
 

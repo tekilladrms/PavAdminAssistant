@@ -17,7 +17,7 @@ public class Email : ValueObject
     public static Email Create(string value)
     {
         if (value is null) throw new ArgumentNullDomainException(nameof(value));
-        if (!IsValid(value)) throw new IncorrectParameterDomainException(nameof(value));
+        if (!IsValid(value)) throw new ArgumentIsNotValidDomainException<Email>(nameof(value));
         return new Email(value);
     }
     private static bool IsValid(string value)

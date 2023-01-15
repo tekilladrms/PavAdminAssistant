@@ -24,8 +24,8 @@ public class ChangeEmployeeValidatorTests
             new EmployeeDto
             {
                 Id = Guid.NewGuid(),
-                FirstName = "Test",
-                LastName = "Test",
+                FirstName = "test",
+                LastName = "test",
                 PhoneNumber = "89561472312",
                 BirthDate = "25.10.1988",
                 JobTitleId = Guid.NewGuid()

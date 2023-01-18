@@ -1,4 +1,3 @@
-using EmployeeService.Domain.Enums;
 using EmployeeService.Domain.Exceptions;
 using EmployeeService.Domain.ValueObjects;
 using SharedKernel.Primitives;
@@ -12,7 +11,7 @@ public sealed class Employee : AggregateRoot
     public PhoneNumber PhoneNumber { get; private set; }
     public DateOnly BirthDate { get; private set; }
     public bool IsActive { get; private set; } = false;
-    public Guid JobTitleId { get; private set; }
+    public Guid JobTitleId { get; private set; } = Guid.Empty;
 
     //for EF
     private Employee() { }
@@ -22,8 +21,7 @@ public sealed class Employee : AggregateRoot
         string firstName,
         string lastName,
         string phoneNumber,
-        DateOnly birthDate,
-        Guid jobTitleId
+        DateOnly birthDate
         )
     {
         FirstName = Name.Create(firstName);
@@ -31,15 +29,13 @@ public sealed class Employee : AggregateRoot
         PhoneNumber = PhoneNumber.Create(phoneNumber);
         BirthDate = birthDate;
         IsActive = true;
-        JobTitleId = jobTitleId;
     }
 
     public static Employee Create(
         string firstName,
         string lastName,
         string phoneNumber,
-        DateOnly birthDate,
-        Guid jobTitleId
+        DateOnly birthDate
         )
     {
         if (firstName is null) throw new ArgumentNullDomainException(nameof(firstName));
@@ -51,8 +47,7 @@ public sealed class Employee : AggregateRoot
             firstName,
             lastName,
             phoneNumber,
-            birthDate,
-            jobTitleId);
+            birthDate);
     }
 
     public void ChangeFirstName(string firstName)
@@ -74,8 +69,8 @@ public sealed class Employee : AggregateRoot
         BirthDate = DateOnly.Parse(birthDate);
     }
 
-    public void ChangeJobTitleId(Guid id)
+    public void ChangeJobTitle(Guid jobTitleId)
     {
-        JobTitleId = id;
+        JobTitleId = jobTitleId;
     }
 }

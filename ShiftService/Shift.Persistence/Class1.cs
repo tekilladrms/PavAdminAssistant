@@ -1,4 +1,4 @@
-﻿namespace Shift.Persistence
+﻿namespace ShiftService.Persistence
 {
     public class Class1
     {

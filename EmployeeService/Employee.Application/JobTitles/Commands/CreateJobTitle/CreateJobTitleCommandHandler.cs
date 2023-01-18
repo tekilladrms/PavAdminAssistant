@@ -4,7 +4,6 @@ using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Repositories;
 using EmployeeService.Domain.ValueObjects;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,16 +22,16 @@ public class CreateJobCommandHandler : IRequestHandler<CreateJobTitleCommand, Jo
     public async Task<JobTitleDto> Handle(CreateJobTitleCommand request, CancellationToken cancellationToken)
     {
         var jobTitle = JobTitle.Create(
-            Name.Create(request.JobTitleDto.JobTitleName),
+            Name.Create(request.JobTitleName),
             Salary.Create(
-                Money.Create(request.JobTitleDto.SalaryAmount, request.JobTitleDto.SalaryCurrency),
-                request.JobTitleDto.SalaryType),
-            PercentageOfSales.Create(request.JobTitleDto.PercentageOfSales));
+                Money.Create(request.SalaryAmount, request.SalaryCurrency),
+                request.SalaryType),
+            PercentageOfSales.Create(request.PercentageOfSales));
 
         await _unitOfWork.JobTitleRepository.AddAsync(jobTitle);
 
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<JobTitle, JobTitleDto>(jobTitle);
+        return _mapper.Map<JobTitleDto>(await _unitOfWork.JobTitleRepository.GetByIdAsync(jobTitle.Guid));
     }
 }

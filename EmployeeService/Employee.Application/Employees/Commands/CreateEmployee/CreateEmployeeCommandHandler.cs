@@ -1,13 +1,11 @@
-using System;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using EmployeeService.Application.DTO;
 using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Repositories;
-using EmployeeService.Domain.ValueObjects;
 using MediatR;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Employees.Commands.CreateEmployee;
 
@@ -25,11 +23,10 @@ internal sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmplo
     public async Task<EmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = Employee.Create(
-            request.employeeDto.FirstName,
-            request.employeeDto.LastName,
-            request.employeeDto.PhoneNumber,
-            DateOnly.Parse(request.employeeDto.BirthDate),
-            request.employeeDto.JobTitleId);
+            request.FirstName,
+            request.LastName,
+            request.PhoneNumber,
+            DateOnly.Parse(request.BirthDate));
 
         await _unitOfWork.EmployeeRepository.AddAsync(employee);
 

@@ -1,14 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using EmployeeService.Domain.Repositories;
+﻿using EmployeeService.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EmployeeService.Persistence
 {
@@ -17,8 +10,12 @@ namespace EmployeeService.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration["DbConnection"];
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseNpgsql(connectionString));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            //services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            //services.AddScoped<IJobTitleRepository, JobTitleRepository>();
 
             return services;
         }

@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace EmployeeService.Persistence.Repositories;
 
-public sealed class JobTitleRepository : IJobTitleRepository
+public class JobTitleRepository : IJobTitleRepository
 {
     private readonly ApplicationDbContext _context;
     public JobTitleRepository(ApplicationDbContext dbContext) => _context = dbContext;
@@ -21,7 +21,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
     {
         var jobTitles = await _context.Set<JobTitle>().ToListAsync(cancellationToken);
 
-        if (jobTitles is null || jobTitles.Count == 0) throw new NotFoundException(nameof(jobTitles));
+        if (jobTitles is null || jobTitles.Count == 0) throw new NotFoundDomainException(nameof(jobTitles));
 
         return jobTitles;
     }
@@ -30,7 +30,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
     {
         var jobTitle = await _context.Set<JobTitle>().FirstOrDefaultAsync(jt => jt.Guid == id);
 
-        if (jobTitle is null) throw new NotFoundException(nameof(jobTitle));
+        if (jobTitle is null) throw new NotFoundDomainException(nameof(jobTitle));
 
         return jobTitle;
     }
@@ -53,7 +53,7 @@ public sealed class JobTitleRepository : IJobTitleRepository
     {
         JobTitle? jt = _context.Set<JobTitle>().FirstOrDefault(jobT => jobT.Guid == id);
 
-        if (jt is null) throw new NotFoundException($"Record with Id = {id} is not exist");
+        if (jt is null) throw new NotFoundDomainException($"Record with Id = {id} is not exist");
 
         _context.Remove(jt);
     }
@@ -66,4 +66,5 @@ public sealed class JobTitleRepository : IJobTitleRepository
         }
         _context.Remove(entity);
     }
+
 }

@@ -1,11 +1,12 @@
 using EmployeeService.Domain.Exceptions;
+using SharedKernel.Interfaces;
 using SharedKernel.Primitives;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 
 namespace EmployeeService.Domain.ValueObjects;
-public class Email : ValueObject
+public class Email : ValueObject, IValidable<string>
 {
     public string Value { get; private init; } = string.Empty;
 
@@ -20,7 +21,7 @@ public class Email : ValueObject
         if (!IsValid(value)) throw new ArgumentIsNotValidDomainException<Email>(nameof(value));
         return new Email(value);
     }
-    private static bool IsValid(string value)
+    public static bool IsValid(string value)
     {
         string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
         Match isMatch = Regex.Match(value, pattern, RegexOptions.IgnoreCase);
@@ -31,5 +32,4 @@ public class Email : ValueObject
         yield return Value;
     }
 
-    
 }

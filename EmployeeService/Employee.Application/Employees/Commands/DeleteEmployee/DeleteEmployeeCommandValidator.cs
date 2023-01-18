@@ -1,9 +1,5 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmployeeService.Application.ValidationMethods;
+using FluentValidation;
 
 namespace EmployeeService.Application.Employees.Commands.DeleteEmployee
 {
@@ -11,7 +7,8 @@ namespace EmployeeService.Application.Employees.Commands.DeleteEmployee
     {
         public DeleteEmployeeCommandValidator()
         {
-            RuleFor(deleteEmployeeCommand => deleteEmployeeCommand.Id).NotEqual(Guid.Empty);
+            RuleFor(deleteEmployeeCommand => deleteEmployeeCommand.Guid)
+                .Must(CheckMethods.IsGuid).WithMessage("employeeId must be guid");
         }
     }
 }

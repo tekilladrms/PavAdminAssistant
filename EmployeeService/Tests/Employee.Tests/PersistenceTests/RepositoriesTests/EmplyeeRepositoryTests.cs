@@ -36,21 +36,18 @@ public class EmployeeRepositoryTests
             "Alex",
             "Fedurin",
             "87654321110",
-            DateOnly.Parse("25.10.1988"),
-            Guid.NewGuid()
+            DateOnly.Parse("25.10.1988")
             ),
             Employee.Create(
             "Ivan",
             "Ivanov",
             "87654321111",
-            DateOnly.Parse("25.10.1989"),
-            Guid.NewGuid()),
+            DateOnly.Parse("25.10.1989")),
             Employee.Create(
             "Petr",
             "Petrov",
             "87654321112",
-            DateOnly.Parse("25.10.1990"),
-            Guid.NewGuid())
+            DateOnly.Parse("25.10.1990"))
         };
 
 
@@ -82,21 +79,18 @@ public class EmployeeRepositoryTests
             "Alex",
             "Fedurin",
             "87654321110",
-            DateOnly.Parse("25.10.1988"),
-            Guid.NewGuid()
+            DateOnly.Parse("25.10.1988")
             ),
             Employee.Create(
             "Ivan",
             "Ivanov",
             "87654321111",
-            DateOnly.Parse("25.10.1989"),
-            Guid.NewGuid()),
+            DateOnly.Parse("25.10.1989")),
             Employee.Create(
             "Petr",
             "Petrov",
             "87654321112",
-            DateOnly.Parse("25.10.1990"),
-            Guid.NewGuid())
+            DateOnly.Parse("25.10.1990"))
         };
         _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(employees);
 
@@ -117,7 +111,7 @@ public class EmployeeRepositoryTests
         // Act
 
         // Assert
-        Assert.ThrowsAsync<NotFoundException>(() => _employeeRepository.GetByIdAsync(Guid.NewGuid()));
+        Assert.ThrowsAsync<NotFoundDomainException>(() => _employeeRepository.GetByIdAsync(Guid.NewGuid()));
     }
 
     [Fact]
@@ -132,8 +126,7 @@ public class EmployeeRepositoryTests
             "Alexey",
             "Alexey",
             "89065435364",
-            DateOnly.Parse("25.10.1988"),
-            Guid.NewGuid()
+            DateOnly.Parse("25.10.1988")
             ));
         var result = _employeeRepository.GetByIdAsync(testGuid);
 
@@ -151,21 +144,18 @@ public class EmployeeRepositoryTests
             "Alex",
             "Fedurin",
             "87654321110",
-            DateOnly.Parse("25.10.1988"),
-            Guid.NewGuid()
+            DateOnly.Parse("25.10.1988")
             ),
             Employee.Create(
             "Ivan",
             "Ivanov",
             "87654321111",
-            DateOnly.Parse("25.10.1989"),
-            Guid.NewGuid()),
+            DateOnly.Parse("25.10.1989")),
             Employee.Create(
             "Petr",
             "Petrov",
             "87654321112",
-            DateOnly.Parse("25.10.1990"),
-            Guid.NewGuid())
+            DateOnly.Parse("25.10.1990"))
         };
         _applicationDbContextMock.Setup(ctx => ctx.Set<Employee>()).ReturnsDbSet(employees);
 
@@ -174,7 +164,7 @@ public class EmployeeRepositoryTests
         _employeeRepository.Delete(employees[0].Guid);
 
         // Assert
-        Assert.ThrowsAsync<NotFoundException>(() => _employeeRepository.GetByIdAsync(_id));
+        Assert.ThrowsAsync<NotFoundDomainException>(() => _employeeRepository.GetByIdAsync(_id));
     }
 
 }

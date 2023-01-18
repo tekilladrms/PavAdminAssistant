@@ -1,10 +1,10 @@
 using AutoMapper;
+using Dapper;
+using EmployeeService.Application.Abstractions;
 using EmployeeService.Application.DTO;
-using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Exceptions.Database;
-using EmployeeService.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,21 +14,23 @@ namespace EmployeeService.Application.JobTitles.Queries.GetAllJobTitles;
 
 public class GetAllJobTitlesQueryHandler : IRequestHandler<GetAllJobTitlesQuery, List<JobTitleDto>>
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-    public GetAllJobTitlesQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetAllJobTitlesQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper)
     {
-        _context = context;
-        _mapper = mapper;
+        _sqlConnectionFactory = sqlConnectionFactory;
     }
 
     public async Task<List<JobTitleDto>> Handle(GetAllJobTitlesQuery request, CancellationToken cancellationToken)
     {
-        var jobTitles = await _context.Set<JobTitle>().AsNoTracking().ToListAsync();
+        await using NpgsqlConnection connection = _sqlConnectionFactory.CreateConnection();
 
-        if (jobTitles is null || !jobTitles.Any()) throw new NotFoundException(nameof(jobTitles));
+        var results = await connection.QueryAsync<JobTitleDto>(
+            @"SELECT ""Guid"", ""JobTitleName"", ""Amount"", ""Currency"", ""SalaryType"", ""PercentageOfSales""
+                FROM ""JobTitle""");
 
-        return _mapper.Map<List<JobTitle>, List<JobTitleDto>>(jobTitles);
+        if (results is null || !results.Any()) throw new NotFoundDomainException(nameof(results));
+
+        return results.ToList();
     }
 }

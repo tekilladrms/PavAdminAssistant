@@ -1,9 +1,4 @@
-using AutoMapper;
-using EmployeeService.Application.Employees.Commands.ChangeEmployee;
-using EmployeeService.Domain.Exceptions;
-using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Domain.Repositories;
-using EmployeeService.Persistence;
 using MediatR;
 using System;
 using System.Threading;
@@ -21,7 +16,10 @@ public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeComman
     }
     public async Task<Unit> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
-        _unitOfWork.EmployeeRepository.Delete(request.Id);
+        Guid employeeId;
+        Guid.TryParse(request.Guid, out employeeId);
+
+        _unitOfWork.EmployeeRepository.Delete(employeeId);
 
         await _unitOfWork.SaveChangesAsync();
 

@@ -1,15 +1,10 @@
 using EmployeeService.Api.Middleware;
 using EmployeeService.Application;
-using EmployeeService.Domain.Repositories;
+using EmployeeService.Application.Abstractions;
 using EmployeeService.Persistence;
-using EmployeeService.Persistence.Repositories;
-using FluentValidation;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddTransient<CustomExceptionHandlerMiddleware>();
+
+builder.Services.AddTransient<ISqlConnectionFactory, SqlConnectionFactory>();
 
 builder.Services.AddApplication();
 

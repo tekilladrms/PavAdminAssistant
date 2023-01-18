@@ -8,9 +8,14 @@ namespace EmployeeService.Application.JobTitles.Commands.CreateJobTitle
     {
         public CreateJobTitleCommandValidator()
         {
-            RuleFor(createJobTitleCommand => createJobTitleCommand.JobTitleDto.JobTitleName).Must(CheckMethods.IsValid<Name, string>);
-            RuleFor(createJobTitleCommand => createJobTitleCommand.JobTitleDto.SalaryAmount).Must(CheckMethods.IsValid<Salary, decimal>);
-            RuleFor(createJobTitleCommand => createJobTitleCommand.JobTitleDto.PercentageOfSales).Must(CheckMethods.IsValid<PercentageOfSales, decimal>);
+            RuleFor(createJobTitleCommand => createJobTitleCommand.JobTitleName)
+                .Must(CheckMethods.IsValid<Name, string>).WithMessage("JobTitleName is not valid");
+
+            RuleFor(createJobTitleCommand => createJobTitleCommand.SalaryAmount)
+                .Must(CheckMethods.IsValid<Salary, decimal>).WithMessage("SalaryAmount is not valid");
+
+            RuleFor(createJobTitleCommand => createJobTitleCommand.PercentageOfSales)
+                .Must(CheckMethods.IsValid<PercentageOfSales, decimal>).WithMessage("PercentageOfSales is not valid");
         }
 
     }

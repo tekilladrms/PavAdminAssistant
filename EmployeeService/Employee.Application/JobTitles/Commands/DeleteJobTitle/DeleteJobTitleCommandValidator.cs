@@ -1,16 +1,15 @@
-﻿using FluentValidation;
+﻿using EmployeeService.Application.ValidationMethods;
+using FluentValidation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.Design;
 
 namespace EmployeeService.Application.JobTitles.Commands.DeleteJobTitle;
 
-public class DeleteJobTitleCommandValidator : AbstractValidator<DeleteJobTitleCommand>
+internal class DeleteJobTitleCommandValidator : AbstractValidator<DeleteJobTitleCommand>
 {
     public DeleteJobTitleCommandValidator()
     {
-        RuleFor(deleteJobTitleCommand => deleteJobTitleCommand.Id).NotEqual(Guid.Empty);
+        RuleFor(deleteJobTitleCommand => deleteJobTitleCommand.Id)
+            .Must(CheckMethods.IsGuid).WithMessage("jobTitleId must be guid");
     }
 }

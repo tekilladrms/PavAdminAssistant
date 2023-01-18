@@ -13,7 +13,7 @@ public class EmployeeTests
     public EmployeeTests()
     {
         _birthDate = new DateOnly(1988, 10, 25);
-        _employee = Employee.Create("Alex", "Fedurin", "89659001995", _birthDate, Guid.NewGuid());
+        _employee = Employee.Create("Alex", "Fedurin", "89659001995", _birthDate);
     }
 
     [Theory]
@@ -25,7 +25,7 @@ public class EmployeeTests
         string lastName,
         string phoneNumber)
     {
-        Assert.Throws<ArgumentNullDomainException>(() => Employee.Create(firstName, lastName, phoneNumber, _birthDate, Guid.NewGuid()));
+        Assert.Throws<ArgumentNullDomainException>(() => Employee.Create(firstName, lastName, phoneNumber, _birthDate));
     }
 
     [Theory]
@@ -35,7 +35,7 @@ public class EmployeeTests
         string lastName,
         string phoneNumber)
     {
-        Assert.NotNull(Employee.Create(firstName, lastName, phoneNumber, _birthDate, Guid.NewGuid()));
+        Assert.NotNull(Employee.Create(firstName, lastName, phoneNumber, _birthDate));
     }
 
     

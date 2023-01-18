@@ -5,7 +5,7 @@ namespace EmployeeService.Application.DTO;
 
 public class JobTitleDto
 {
-    public Guid Id { get; set; }
+    public Guid Guid { get; set; }
     public string JobTitleName { get; set; } = string.Empty;
     public decimal SalaryAmount { get; set; } = default;
     public Currency SalaryCurrency { get; set; } = Currency.RUB;

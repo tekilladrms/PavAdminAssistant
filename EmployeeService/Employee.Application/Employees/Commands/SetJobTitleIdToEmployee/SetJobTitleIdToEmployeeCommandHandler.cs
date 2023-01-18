@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Employees.Commands.SetJobTitleIdToEmployee;
 
-public class SetJobTitleIdToEmployeeCommandHandler : IRequestHandler<SetJobTitleIdToEmployeeCommand>
+public class SetJobTitleIdToEmployeeCommandHandler : IRequestHandler<SetJobTitleIdToEmployeeCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -17,21 +17,28 @@ public class SetJobTitleIdToEmployeeCommandHandler : IRequestHandler<SetJobTitle
     }
     public async Task<Unit> Handle(SetJobTitleIdToEmployeeCommand request, CancellationToken cancellationToken)
     {
-        var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.EmployeeId);
+        Guid jobTitleId, employeeId;
+        Guid.TryParse(request.JobTitleId, out jobTitleId);
+        Guid.TryParse(request.EmployeeId, out employeeId);
+
+        var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(employeeId);
 
         if (employee is null)
         {
-            throw new NotFoundException(nameof(employee));
+            throw new NotFoundDomainException(nameof(employee));
         }
 
-        var jobTitle = await _unitOfWork.JobTitleRepository.GetByIdAsync(request.JobTitleId);
+        var jobTitle = await _unitOfWork.JobTitleRepository.GetByIdAsync(jobTitleId);
 
         if (jobTitle is null)
         {
-            throw new NotFoundException(nameof(jobTitle));
+            throw new NotFoundDomainException(nameof(jobTitle));
         }
 
-        employee.ChangeJobTitleId(request.JobTitleId);
+        employee.ChangeJobTitle(jobTitle.Guid);
+
+        _unitOfWork.EmployeeRepository.Update(employee);
+        _unitOfWork.JobTitleRepository.Update(jobTitle);
 
         await _unitOfWork.SaveChangesAsync();
 

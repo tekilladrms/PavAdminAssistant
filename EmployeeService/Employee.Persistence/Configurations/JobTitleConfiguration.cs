@@ -11,7 +11,9 @@ public class JobTitleConfiguration : IEntityTypeConfiguration<JobTitle>
 {
     public void Configure(EntityTypeBuilder<JobTitle> builder)
     {
+        //builder.ToTable("JobTitles");
         builder.HasKey(jt => jt.Guid);
+        //builder.Property(jt => jt.Guid).ValueGeneratedNever();
         
 
         builder.OwnsOne(jt => jt.JobTitleName).Property(prop => prop.Value).HasColumnName<string>("JobTitleName");

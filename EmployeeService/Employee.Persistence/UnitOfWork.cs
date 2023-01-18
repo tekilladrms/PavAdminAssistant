@@ -14,13 +14,19 @@ public class UnitOfWork : IUnitOfWork
 
     private ApplicationDbContext _context;
 
-    private EmployeeRepository _employeeRepository;
-    private JobTitleRepository _jobTitleRepository;
+    private IEmployeeRepository _employeeRepository;
+    private IJobTitleRepository _jobTitleRepository;
 
 
     IEmployeeRepository IUnitOfWork.EmployeeRepository => _employeeRepository;
 
     IJobTitleRepository IUnitOfWork.JobTitleRepository => _jobTitleRepository;
+
+    //public UnitOfWork(IEmployeeRepository employeeRepository, IJobTitleRepository jobTitleRepository)
+    //{
+    //    _employeeRepository = employeeRepository;
+    //    _jobTitleRepository = jobTitleRepository;
+    //}
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -29,23 +35,23 @@ public class UnitOfWork : IUnitOfWork
         _jobTitleRepository = new JobTitleRepository(_context);
     }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!_disposed)
-        {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
-        }
-        _disposed = true;
-    }
+    //protected virtual void Dispose(bool disposing)
+    //{
+    //    if (!_disposed)
+    //    {
+    //        if (disposing)
+    //        {
+    //            _context.Dispose();
+    //        }
+    //    }
+    //    _disposed = true;
+    //}
 
-    public void Dispose()
-    {
-        Dispose(true);
-        GC.SuppressFinalize(this);
-    }
+    //public void Dispose()
+    //{
+    //    Dispose(true);
+    //    GC.SuppressFinalize(this);
+    //}
 
     public Task SaveChangesAsync()
     {

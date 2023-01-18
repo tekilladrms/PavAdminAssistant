@@ -34,17 +34,21 @@ public class CreateEmployeeCommandHandlerTests
     public async Task Handle_Should_ReturnDTO_WhenAllParametersAreCorrect()
     {
         // Arrange
-        
+
         var command = new CreateEmployeeCommand(
-            new EmployeeDto
-            {
-                Id = Guid.NewGuid(),
-                FirstName = "FirstName",
-                LastName = "LastName",
-                PhoneNumber = "87654321111",
-                BirthDate = "25.10.1988",
-                JobTitleId = Guid.NewGuid()
-            });
+            //new EmployeeDto
+            //{
+            //    Id = Guid.NewGuid(),
+            //    FirstName = "FirstName",
+            //    LastName = "LastName",
+            //    PhoneNumber = "87654321111",
+            //    BirthDate = "25.10.1988",
+            //    JobTitleId = Guid.NewGuid()
+            //});
+            "FirstName",
+            "LastName",
+            "87654321111",
+            "25.10.1988");
 
         var handler = new CreateEmployeeCommandHandler(_unitOfWork, _mapper);
 
@@ -53,6 +57,6 @@ public class CreateEmployeeCommandHandlerTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(command.employeeDto.FirstName, result.FirstName);
+        Assert.Equal(command.FirstName, result.FirstName);
     }
 }

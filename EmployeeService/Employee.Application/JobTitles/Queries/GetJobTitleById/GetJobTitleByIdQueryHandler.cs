@@ -1,10 +1,10 @@
-using AutoMapper;
+using Dapper;
+using EmployeeService.Application.Abstractions;
 using EmployeeService.Application.DTO;
-using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Exceptions.Database;
-using EmployeeService.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,20 +12,32 @@ namespace EmployeeService.Application.JobTitles.Queries.GetJobTitleById;
 
 public class GetJobTitleByIdQueryHandler : IRequestHandler<GetJobTitleByIdQuery, JobTitleDto>
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly ISqlConnectionFactory _sqlConnectionFactory;
 
-    public GetJobTitleByIdQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetJobTitleByIdQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
     {
-        _context = context;
-        _mapper = mapper;
+        _sqlConnectionFactory = sqlConnectionFactory;
     }
     public async Task<JobTitleDto> Handle(GetJobTitleByIdQuery request, CancellationToken cancellationToken)
     {
-        var jobTitle = await _context.Set<JobTitle>().AsNoTracking().FirstOrDefaultAsync(jt => jt.Guid == request.jobTitleId);
+        Guid jobTitleId;
+        Guid.TryParse(request.JobTitleId, out jobTitleId);
 
-        if (jobTitle is null) throw new NotFoundException(nameof(jobTitle));
+        await using NpgsqlConnection connection = _sqlConnectionFactory.CreateConnection();
 
-        return _mapper.Map<JobTitle, JobTitleDto>(jobTitle);
+        var resultDto = await connection.QueryFirstOrDefaultAsync<JobTitleDto>(
+            @"SELECT ""Guid"", ""JobTitleName"", ""Amount"", ""Currency"", ""SalaryType"", ""PercentageOfSales""
+                FROM ""JobTitle""
+                WHERE ""Guid"" = @jobTitleId", new
+            {
+                jobTitleId
+            });
+
+        if (resultDto is null) 
+        {
+            throw new NotFoundDomainException($"Not found record with id: {jobTitleId}");
+        }
+
+        return resultDto;
     }
 }

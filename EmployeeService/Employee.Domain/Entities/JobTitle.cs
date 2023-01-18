@@ -14,6 +14,7 @@ public class JobTitle : Entity
 
     public PercentageOfSales PercentageOfSales { get; private set; }
 
+
     //for EF
     private JobTitle() { }
 
@@ -54,7 +55,6 @@ public class JobTitle : Entity
 
         PercentageOfSales = newPercentageOfSales;
     }
-
 
 
 }

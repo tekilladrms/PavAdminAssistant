@@ -1,9 +1,10 @@
 ﻿using EmployeeService.Domain.Exceptions;
-using EmployeeService.SharedKernel.Errors;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using SharedKernel.Errors;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -48,6 +49,7 @@ public class CustomExceptionHandlerMiddleware : IMiddleware
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
             BadHttpRequestException => StatusCodes.Status400BadRequest,
             ValidationException => StatusCodes.Status422UnprocessableEntity,
+            DbException => StatusCodes.Status501NotImplemented,
             _ => StatusCodes.Status500InternalServerError
         };
 
@@ -56,6 +58,7 @@ public class CustomExceptionHandlerMiddleware : IMiddleware
         {
             DomainException => "Domain error",
             ValidationException => "Validation error",
+            DbException => "Database error",
             _ => "Server Error"
 
         };
@@ -74,6 +77,15 @@ public class CustomExceptionHandlerMiddleware : IMiddleware
                     Message = err.ErrorMessage
                 });
             }
+        }
+
+        if (exception is DbException dbException)
+        {
+            result.Add( new ErrorDetails
+            {
+                Title = "DbError",
+                Message = dbException.Message
+            });
         }
         return result;
     }

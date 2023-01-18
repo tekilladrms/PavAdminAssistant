@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EmployeeService.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,7 +29,7 @@ namespace EmployeeService.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobTitles",
+                name: "JobTitle",
                 columns: table => new
                 {
                     Guid = table.Column<Guid>(type: "uuid", nullable: false),
@@ -41,7 +41,7 @@ namespace EmployeeService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobTitles", x => x.Guid);
+                    table.PrimaryKey("PK_JobTitle", x => x.Guid);
                 });
         }
 
@@ -52,7 +52,7 @@ namespace EmployeeService.Persistence.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "JobTitles");
+                name: "JobTitle");
         }
     }
 }

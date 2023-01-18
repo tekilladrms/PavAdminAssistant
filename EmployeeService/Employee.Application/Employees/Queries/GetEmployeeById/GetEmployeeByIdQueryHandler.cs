@@ -1,37 +1,46 @@
 using AutoMapper;
+using Dapper;
+using EmployeeService.Application.Abstractions;
 using EmployeeService.Application.DTO;
-using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Exceptions.Database;
-using EmployeeService.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmployeeService.Application.Employees.Queries.GetEmployeeById;
 public class GetEmployeeByIdQueryHandler : IRequestHandler<GetEmployeeByIdQuery, EmployeeDto>
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly IMapper _mapper;
 
-	public GetEmployeeByIdQueryHandler(ApplicationDbContext context, IMapper mapper)
+	public GetEmployeeByIdQueryHandler(ISqlConnectionFactory connectionFactory, IMapper mapper)
     {
-        _context = context;
+        _sqlConnectionFactory = connectionFactory;
         _mapper = mapper;
     }
     public async Task<EmployeeDto> Handle(GetEmployeeByIdQuery request, CancellationToken cancellationToken = default)
     {
-        var employee = await _context.Set<Employee>()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(emp => emp.Guid.ToString() == request.EmployeeId, cancellationToken);
+        Guid EmployeeId;
+        Guid.TryParse(request.EmployeeId, out EmployeeId);
 
-        if (employee is null)
+        await using NpgsqlConnection connection = _sqlConnectionFactory.CreateConnection();
+
+        EmployeeDto resultDto = await connection.QueryFirstOrDefaultAsync<EmployeeDto>(
+            @"SELECT ""Guid"", ""FirstName"", ""LastName"", ""PhoneNumber"", ""JobTitleId""
+                FROM ""Employees""
+                WHERE ""Guid"" = @EmployeeId",
+            new
+            {
+                EmployeeId,
+            });
+
+        if (resultDto is null)
         {
-            throw new NotFoundException($"Not found record with id: {request.EmployeeId}");
+            throw new NotFoundDomainException($"Not found record with id: {request.EmployeeId}");
         }
 
-        return _mapper.Map<EmployeeDto>(employee);
+        return resultDto;
     }
 }

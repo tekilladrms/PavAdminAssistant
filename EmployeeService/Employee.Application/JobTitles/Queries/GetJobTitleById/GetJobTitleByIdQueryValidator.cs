@@ -1,9 +1,5 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmployeeService.Application.ValidationMethods;
+using FluentValidation;
 
 namespace EmployeeService.Application.JobTitles.Queries.GetJobTitleById;
 
@@ -11,6 +7,7 @@ internal class GetJobTitleByIdQueryValidator : AbstractValidator<GetJobTitleById
 {
     public GetJobTitleByIdQueryValidator()
     {
-        RuleFor(getJobTitleByIdQuery => getJobTitleByIdQuery.jobTitleId).NotEqual(Guid.Empty);
+        RuleFor(getJobTitleByIdQuery => getJobTitleByIdQuery.JobTitleId)
+            .Must(CheckMethods.IsGuid).WithMessage("JobTitleId must be guid");
     }
 }

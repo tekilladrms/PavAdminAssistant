@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeService.Application.JobTitles.Commands.DeleteJobTitle;
 
-public class DeleteJobTitleCommandHandler : IRequestHandler<DeleteJobTitleCommand>
+public class DeleteJobTitleCommandHandler : IRequestHandler<DeleteJobTitleCommand, Unit>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +17,10 @@ public class DeleteJobTitleCommandHandler : IRequestHandler<DeleteJobTitleComman
 
     public async Task<Unit> Handle(DeleteJobTitleCommand request, CancellationToken cancellationToken)
     {
-        _unitOfWork.JobTitleRepository.Delete(request.Id);
+        Guid jobTitleId;
+        Guid.TryParse(request.Id, out jobTitleId);
+
+        _unitOfWork.JobTitleRepository.Delete(jobTitleId);
 
         await _unitOfWork.SaveChangesAsync();
 

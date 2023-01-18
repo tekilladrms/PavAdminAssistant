@@ -115,7 +115,7 @@ public class JobTitleRepositoryTests
         // Act
 
         // Assert
-        Assert.ThrowsAsync<NotFoundException>(() => _jobTitleRepository.GetByIdAsync(Guid.NewGuid()));
+        Assert.ThrowsAsync<NotFoundDomainException>(() => _jobTitleRepository.GetByIdAsync(Guid.NewGuid()));
     }
 
     [Fact]

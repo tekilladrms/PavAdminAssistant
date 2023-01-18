@@ -1,7 +1,7 @@
 using AutoMapper;
 using EmployeeService.Application;
 using EmployeeService.Application.DTO;
-using EmployeeService.Application.Employees.Commands.ChangeEmployee;
+using EmployeeService.Application.Employees.Commands.UpdateEmployee;
 using EmployeeService.Domain.Entities;
 using EmployeeService.Persistence;
 using EmployeeService.Persistence.Repositories;
@@ -45,21 +45,18 @@ public class ChangeEmployeeCommandHandlerTests
             "Alex",
             "Fedurin",
             "87654321110",
-            DateOnly.Parse("25.10.1988"),
-            Guid.NewGuid()
+            DateOnly.Parse("25.10.1988")
             ),
             Employee.Create(
             "Ivan",
             "Ivanov",
             "87654321111",
-            DateOnly.Parse("25.10.1989"),
-            Guid.NewGuid()),
+            DateOnly.Parse("25.10.1989")),
             Employee.Create(
             "Petr",
             "Petrov",
             "87654321112",
-            DateOnly.Parse("25.10.1990"),
-            Guid.NewGuid())
+            DateOnly.Parse("25.10.1990"))
         };
 
 
@@ -72,7 +69,6 @@ public class ChangeEmployeeCommandHandlerTests
         // Arrange
         var employeeDto = new EmployeeDto
         {
-            Id = _id,
             FirstName = "FirstName",
             LastName = "LastName",
             PhoneNumber = "87654321111",
@@ -82,19 +78,22 @@ public class ChangeEmployeeCommandHandlerTests
 
 
 
-        var command = new ChangeEmployeeCommand(
-            new EmployeeDto
-            {
-                Id = _id,
-                FirstName = "Alex",
-                LastName = "Fedurin",
-                PhoneNumber = "87654320000",
-                BirthDate = "25.10.1990",
-                JobTitleId = Guid.NewGuid()
-            }
-            );
+        var command = new UpdateEmployeeCommand(
+            //new EmployeeDto
+            //{
+            //    Id = _id,
+            //    FirstName = "Alex",
+            //    LastName = "Fedurin",
+            //    PhoneNumber = "87654320000",
+            //    BirthDate = "25.10.1990"
+            //}
+            _id.ToString(),
+            "Alex",
+            "Fedurin",
+            "87654320000",
+            "25.10.1990");
 
-        var handler = new ChangeEmployeeCommandHandler(_unitOfWork, _mapper);
+        var handler = new UpdateEmployeeCommandHandler(_unitOfWork, _mapper);
 
         // Act
         var result = await handler.Handle(command, default);
@@ -102,10 +101,10 @@ public class ChangeEmployeeCommandHandlerTests
         // Assert
         Assert.NotNull(result);
         Assert.IsType<EmployeeDto>(result);
-        Assert.Equal(command.employeeDto.FirstName, result.FirstName);
-        Assert.Equal(command.employeeDto.LastName, result.LastName);
-        Assert.Equal(command.employeeDto.PhoneNumber, result.PhoneNumber);
-        Assert.Equal(command.employeeDto.BirthDate, result.BirthDate);
+        Assert.Equal(command.FirstName, result.FirstName);
+        Assert.Equal(command.LastName, result.LastName);
+        Assert.Equal(command.PhoneNumber, result.PhoneNumber);
+        Assert.Equal(command.BirthDate, result.BirthDate);
     }
 
 }

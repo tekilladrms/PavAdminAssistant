@@ -1,4 +1,4 @@
-﻿namespace Shift.Application
+﻿namespace ShiftService.Application
 {
     public class Class1
     {

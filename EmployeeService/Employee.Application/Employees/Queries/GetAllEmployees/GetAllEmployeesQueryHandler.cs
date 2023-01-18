@@ -1,10 +1,10 @@
 using AutoMapper;
+using Dapper;
+using EmployeeService.Application.Abstractions;
 using EmployeeService.Application.DTO;
-using EmployeeService.Domain.Entities;
 using EmployeeService.Domain.Exceptions.Database;
-using EmployeeService.Persistence;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,23 +14,27 @@ namespace EmployeeService.Application.Employees.Queries.GetAllEmployees;
 
 public class GetAllEmployeesQueryHandler : IRequestHandler<GetAllEmployeesQuery, List<EmployeeDto>>
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly IMapper _mapper;
-    public GetAllEmployeesQueryHandler(ApplicationDbContext context, IMapper mapper)
+    public GetAllEmployeesQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IMapper mapper)
     {
-        _context = context;
+        _sqlConnectionFactory = sqlConnectionFactory;
         _mapper = mapper;
     }
     public async Task<List<EmployeeDto>> Handle(GetAllEmployeesQuery request, CancellationToken cancellationToken = default)
     {
-        var results = await _context.Set<Employee>().AsNoTracking().ToListAsync();
+        await using NpgsqlConnection connection = _sqlConnectionFactory.CreateConnection();
+
+        var results = await connection.QueryAsync<EmployeeDto>(
+            @"SELECT ""Guid"", ""FirstName"", ""LastName"", ""PhoneNumber"", ""JobTitleId""
+                FROM ""Employees""");
 
         if(results is null || !results.Any())
         {
-            throw new NotFoundException(nameof(results));
+            throw new NotFoundDomainException(nameof(results));
         }
 
-        return _mapper.Map<List<Employee>, List<EmployeeDto>>(results);
+        return results.ToList();
     }
 
     

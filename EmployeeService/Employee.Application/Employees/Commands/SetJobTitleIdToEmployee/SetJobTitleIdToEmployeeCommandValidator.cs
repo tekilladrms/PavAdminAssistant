@@ -1,9 +1,5 @@
-﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EmployeeService.Application.ValidationMethods;
+using FluentValidation;
 
 namespace EmployeeService.Application.Employees.Commands.SetJobTitleIdToEmployee
 {
@@ -11,8 +7,11 @@ namespace EmployeeService.Application.Employees.Commands.SetJobTitleIdToEmployee
     {
         public SetJobTitleIdToEmployeeCommandValidator()
         {
-            RuleFor(setJobTitleIdToEmployeeCommand => setJobTitleIdToEmployeeCommand.EmployeeId).NotEqual(Guid.Empty);
-            RuleFor(setJobTitleIdToEmployeeCommand => setJobTitleIdToEmployeeCommand.JobTitleId).NotEqual(Guid.Empty);
+            RuleFor(setJobTitleIdToEmployeeCommand => setJobTitleIdToEmployeeCommand.EmployeeId)
+                .Must(CheckMethods.IsGuid).WithMessage("EmployeeId must be guid");
+
+            RuleFor(setJobTitleIdToEmployeeCommand => setJobTitleIdToEmployeeCommand.JobTitleId)
+                .Must(CheckMethods.IsGuid).WithMessage("JobTitleId must be guid");
         }
     }
 }

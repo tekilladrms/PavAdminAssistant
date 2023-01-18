@@ -17,7 +17,7 @@ namespace EmployeeService.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -49,7 +49,7 @@ namespace EmployeeService.Persistence.Migrations
 
                     b.HasKey("Guid");
 
-                    b.ToTable("JobTitles");
+                    b.ToTable("JobTitle");
                 });
 
             modelBuilder.Entity("EmployeeService.Domain.Entities.Employee", b =>
@@ -132,7 +132,7 @@ namespace EmployeeService.Persistence.Migrations
 
                             b1.HasKey("JobTitleGuid");
 
-                            b1.ToTable("JobTitles");
+                            b1.ToTable("JobTitle");
 
                             b1.WithOwner()
                                 .HasForeignKey("JobTitleGuid");
@@ -149,7 +149,7 @@ namespace EmployeeService.Persistence.Migrations
 
                             b1.HasKey("JobTitleGuid");
 
-                            b1.ToTable("JobTitles");
+                            b1.ToTable("JobTitle");
 
                             b1.WithOwner()
                                 .HasForeignKey("JobTitleGuid");
@@ -167,7 +167,7 @@ namespace EmployeeService.Persistence.Migrations
 
                             b1.HasKey("JobTitleGuid");
 
-                            b1.ToTable("JobTitles");
+                            b1.ToTable("JobTitle");
 
                             b1.WithOwner()
                                 .HasForeignKey("JobTitleGuid");
@@ -187,7 +187,7 @@ namespace EmployeeService.Persistence.Migrations
 
                                     b2.HasKey("SalaryJobTitleGuid");
 
-                                    b2.ToTable("JobTitles");
+                                    b2.ToTable("JobTitle");
 
                                     b2.WithOwner()
                                         .HasForeignKey("SalaryJobTitleGuid");

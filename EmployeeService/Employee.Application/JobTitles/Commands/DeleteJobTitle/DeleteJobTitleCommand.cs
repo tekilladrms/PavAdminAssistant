@@ -1,6 +1,5 @@
 using MediatR;
-using System;
 
 namespace EmployeeService.Application.JobTitles.Commands.DeleteJobTitle;
 
-public sealed record DeleteJobTitleCommand(Guid Id) : IRequest;
+public sealed record DeleteJobTitleCommand(string Id) : IRequest<Unit>;

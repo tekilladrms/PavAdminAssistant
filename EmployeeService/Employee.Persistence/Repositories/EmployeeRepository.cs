@@ -2,11 +2,9 @@
 using EmployeeService.Domain.Exceptions.Database;
 using EmployeeService.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using SharedKernel.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -68,6 +66,11 @@ namespace EmployeeService.Persistence.Repositories
             _context.Remove(entity);
         }
 
-       
+        public async Task<bool> IsPhoneNumberUnique(string phoneNumber)
+        {
+            Employee? emp = await _context.Set<Employee>().FirstOrDefaultAsync(e => e.PhoneNumber.Value == phoneNumber);
+
+            return emp is null ? true : false;
+        }
     }
 }

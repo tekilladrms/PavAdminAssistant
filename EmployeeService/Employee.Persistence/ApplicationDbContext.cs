@@ -7,12 +7,6 @@ namespace EmployeeService.Persistence;
 public class ApplicationDbContext : DbContext
 {
 
-    // for mock
-    public ApplicationDbContext()
-    {
-
-    }
-
     public ApplicationDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

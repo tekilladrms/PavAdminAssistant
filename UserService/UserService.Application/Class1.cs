@@ -1,4 +1,4 @@
-﻿namespace ShiftService.Persistence
+﻿namespace UserService.Application
 {
     public class Class1
     {
